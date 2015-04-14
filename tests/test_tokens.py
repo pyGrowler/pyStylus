@@ -2,10 +2,9 @@
 # tests/test_tokens.py
 #
 
+import pytest
 from ply import lex
-
 from pystylus import tokens as TOKENS
-
 
 class mock_stylus():
     def _normalize_whitespace(self, t):
@@ -102,3 +101,27 @@ def test_comment():
     assert tok.type == "NEWLINE"
     tok = lexer.token()
     assert tok.type == "NAME" and tok.value == "E" and tok.lineno == 2
+
+
+def test_multiline_comment():
+    s = "X/**/"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "X"
+    tok = lexer.token()
+    assert tok is None
+
+    lexer.input("A /*\nthis is a comment*/B")
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "A"
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "B"
+    tok = lexer.token()
+    assert tok is None
+
+    lexer.input("A/*\nthis is a comment B")
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "A"
+    with pytest.raises(Exception):
+        tok = lexer.token()

@@ -57,7 +57,7 @@ t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
 t_LT = r'<'
 t_GT = r'>'
 
-t_DOT = r'.'
+t_DOT = r'\.'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
 
 t_LPAREN = r'\('
@@ -73,11 +73,20 @@ def t_comment(t):
     pass
 
 
+def t_multiline_comment(t):
+    r"[ ]*/\*([^\*]|\*[^/])*\*/"
+    pass
+
+
+def t_unterminated_multiline_comment(t):
+    r"[ ]*/\*([^\*]|\*[^/])*"
+    e_str = "Unterminated multi-line comment starting at line %d" % (t.lineno)
+    raise Exception(e_str)
+
+
 def t_WS(t):
     r" [ \t\f]+ "
     t.lexer.stylus._normalize_whitespace(t)
-    # if PREV_TOKEN_TYPE == 'NEWLINE':
-    # t.type = 'INDENT'
     return t
 
 
@@ -85,7 +94,6 @@ def t_newline(t):
     r"\n+"
     t.lexer.lineno += len(t.value)
     t.type = "NEWLINE"
-    # if t.lexer.paren_count == 0:
     return t
 
 
