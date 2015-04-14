@@ -17,7 +17,7 @@ def test_line():
     for x in tokens[1:]:
         if x.type == 'WS':
             assert x.value == ' '
-        assert x.type in ('NAME','WS')
+        assert x.type in ('NAME', 'WS')
 
 
 def test_comment():
@@ -37,6 +37,7 @@ def test_iter_token():
     s = "\t"
 
     # it = iter()
+
 
 def test_ident():
     s = "  "

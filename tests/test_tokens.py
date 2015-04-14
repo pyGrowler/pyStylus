@@ -6,15 +6,17 @@ from ply import lex
 
 from pystylus import tokens as TOKENS
 
+
 class mock_stylus():
     def _normalize_whitespace(self, t):
         pass
 
+
 def test_iter():
-    l = [1,2,3,4]
+    l = [1, 2, 3, 4]
     # i = iter(l.next, None)
     # for x in i:
-        # x += 1
+    #     x += 1
     # raise Exception(l)
 
 
@@ -29,6 +31,7 @@ def test_zero():
 
     t_ZERO = r'0'
     t_ONE = r'1'
+
     def t_TWO(t):
         r'2'
         return t

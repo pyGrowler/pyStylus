@@ -2,9 +2,19 @@
 # pystylus/tokens.py
 #
 
-PREV_TOKEN_TYPE = 'NEWLINE'
+keyword_list = [
+    'add'
+]
 
-tokens = (
+RESERVED = dict()
+
+# copy keyword list into tokens and RESERVED 
+tokens = [
+    RESERVED.__setitem__(name.upper(), name) or name.upper()
+    for name in keyword_list
+]
+
+tokens += [
 
     'LONGARROW',
     'LONGWAVYARROW',
@@ -30,7 +40,7 @@ tokens = (
     'INDENT',
     'DEDENT',
     'ENDMARKER',
-)
+]
 
 t_LONGARROW = r'-->'
 t_LONGWAVYARROW = r'~~>'
