@@ -73,8 +73,9 @@ class StylusLexer:
                 else:
                     yield self._empty_ident()
             t.line_position = line_position
-            line_position = 0 if t.type is 'NEWLINE' \
-                              else line_position + len(t.value)
+            line_position = 0 \
+                if t.type is 'NEWLINE' \
+                else line_position + len(t.value)
             prev_type = t.type
             yield t
 

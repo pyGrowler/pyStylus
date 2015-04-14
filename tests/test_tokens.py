@@ -82,3 +82,11 @@ def test_indent_token():
     assert tok.type == "NUMBER"
     tok = lexer.token()
     assert tok.type == "WS"
+
+
+def test_reserved():
+    s = "if one"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "IF"

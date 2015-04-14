@@ -3,14 +3,15 @@
 #
 
 keyword_list = [
-    'add'
+    'if',
+    'for',
 ]
 
 RESERVED = dict()
 
-# copy keyword list into tokens and RESERVED 
+# copy keyword list into tokens and RESERVED
 tokens = [
-    RESERVED.__setitem__(name.upper(), name) or name.upper()
+    RESERVED.__setitem__(name, name.upper()) or name.upper()
     for name in keyword_list
 ]
 
@@ -40,6 +41,7 @@ tokens += [
     'INDENT',
     'DEDENT',
     'ENDMARKER',
+    'EQUALS',
 ]
 
 t_LONGARROW = r'-->'
@@ -55,7 +57,7 @@ t_GT = r'>'
 t_DOT = r'.'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
 
-# t_INDENT = r'[ ]+'
+t_EQUALS = r'='
 
 
 def t_comment(t):
@@ -79,10 +81,10 @@ def t_newline(t):
     return t
 
 
-t_NAME = r"[a-zA-Z_][a-zA-Z0-9_]*"
-# def t_NAME(self,t):
-#   r"[a-zA-Z_][a-zA-Z0-9_]*"
-#   return t
+def t_NAME(t):
+    r"[a-zA-Z_][a-zA-Z0-9_]*"
+    t.type = RESERVED.get(t.value, "NAME")
+    return t
 
 
 def t_INDENT(t):
