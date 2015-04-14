@@ -31,8 +31,11 @@ tokens += [
     'DIVIDE',
     'DOT',
     'OCTOTHORPE',
+
     'LPAREN',
     'RPAREN',
+    'LBRACE',
+    'RBRACE',
 
     'NEWLINE',
     'NUMBER',
@@ -56,6 +59,11 @@ t_GT = r'>'
 
 t_DOT = r'.'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
+
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
 
 t_EQUALS = r'='
 
@@ -84,12 +92,6 @@ def t_newline(t):
 def t_NAME(t):
     r"[a-zA-Z_][a-zA-Z0-9_]*"
     t.type = RESERVED.get(t.value, "NAME")
-    return t
-
-
-def t_INDENT(t):
-    r'[ ]+'
-    # raise Exception(dir(t))
     return t
 
 

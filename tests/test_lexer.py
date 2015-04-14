@@ -3,6 +3,7 @@
 #
 
 from pystylus.lexer import StylusLexer
+import pytest
 
 
 def test_construction():
@@ -32,12 +33,25 @@ def test_tab_expansion():
     assert StylusLexer(1).tokenize(s)[0].value == ' '
     assert StylusLexer().tokenize(s + ' ')[0].value == ' '*9
 
+    s = "X\tY"
+    assert StylusLexer().tokenize(s)[2].type == 'WS'
+    assert StylusLexer().tokenize(s)[2].value == ' '*8
+
 
 def test_iter_token():
-    s = "\t"
+    s = "a"
+    it = StylusLexer().yield_tokens(s)
+    tok = next(it)
+    assert tok.type == 'INDENT' and tok.value == ''
+    tok = next(it)
+    assert tok.type == 'NAME' and tok.value == 'a' and tok.line_position == 0
+
+    with pytest.raises(StopIteration):
+        next(it)
 
     # it = iter()
 
 
-def test_ident():
+def test_indent():
     s = "  "
+    assert StylusLexer().tokenize(s)[0].type == 'INDENT'

@@ -90,3 +90,15 @@ def test_reserved():
     lexer.input(s)
     tok = lexer.token()
     assert tok.type == "IF"
+
+
+def test_comment():
+    s = "A// B C D\nE"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "A"
+    tok = lexer.token()
+    assert tok.type == "NEWLINE"
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "E" and tok.lineno == 2
