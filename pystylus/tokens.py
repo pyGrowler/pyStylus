@@ -27,7 +27,7 @@ tokens = (
     'NUMBER',
     'NAME',
     'WS',
-    'IDENT',
+    'INDENT',
     'DEDENT',
     'ENDMARKER',
 )
@@ -57,7 +57,7 @@ def t_WS(t):
     r" [ \t\f]+ "
     t.lexer.stylus._normalize_whitespace(t)
     # if PREV_TOKEN_TYPE == 'NEWLINE':
-    # t.type = 'IDENT'
+    # t.type = 'INDENT'
     return t
 
 

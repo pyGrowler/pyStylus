@@ -2,7 +2,7 @@
 #
 #
 
-from ply.lex import lex
+from ply.lex import (lex, LexToken)
 from . import tokens
 
 
@@ -23,7 +23,7 @@ class StylusLexer:
         self.lex.stylus = self
         self.tab_expansion = tab_expansion
 
-        # pretend that the first character was a newline (helps with IDENT)
+        # pretend that the first character was a newline (helps with INDENT)
         self.prev_token_type = 'NEWLINE'
 
     def _normalize_whitespace(self, token):
@@ -40,6 +40,15 @@ class StylusLexer:
             token.value = token.value[:pos] + filler + token.value[pos+1:]
             pos = token.value.find('\t')
 
+    def _empty_ident(self):
+        ident = LexToken()
+        ident.lexer = self.lex
+        ident.type = 'INDENT'
+        ident.value = ''
+        ident.line_position = 0
+        ident.lineno = self.lex.lineno  # I think this will work...
+        ident.lexpos = self.lex.lexpos
+        return ident
 
     @classmethod
     def _determine_indents(cls, token_iter):
@@ -56,9 +65,18 @@ class StylusLexer:
         A generator which tokenizes a string into a series of pystylus tokens.
         """
         self.lex.input(string)
-
-        t_itr = iter(self.lex.token, None)
-        yield from t_itr
+        line_position = 0
+        for t in iter(self.lex.token, None):
+            if line_position is 0:
+                if t.type == 'WS':
+                    t.type = 'INDENT'
+                else:
+                    yield self._empty_ident()
+            t.line_position = line_position
+            line_position = 0 if t.type is 'NEWLINE' \
+                              else line_position + len(t.value)
+            prev_type = t.type
+            yield t
 
     def tokenize(self, string):
         """
