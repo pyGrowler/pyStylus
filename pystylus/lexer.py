@@ -40,15 +40,20 @@ class StylusLexer:
             token.value = token.value[:pos] + filler + token.value[pos+1:]
             pos = token.value.find('\t')
 
+
+    def _gen_token(self, type, value='', lnum=None, position=0, lexpos=None):
+        tok = LexToken()
+        tok.lexer = self.lex
+        tok.type = type
+        tok.value = value
+        tok.line_position = position
+        # I think this will work...
+        tok.lineno = self.lex.lineno if lnum is None else lnum
+        tok.lexpos = self.lex.lexpos if lexpos is None else lexpos
+        return tok
+
     def _empty_ident(self):
-        ident = LexToken()
-        ident.lexer = self.lex
-        ident.type = 'INDENT'
-        ident.value = ''
-        ident.line_position = 0
-        ident.lineno = self.lex.lineno  # I think this will work...
-        ident.lexpos = self.lex.lexpos
-        return ident
+        return self._gen_token('INDENT')
 
     @classmethod
     def _determine_indents(cls, token_iter):
@@ -78,9 +83,7 @@ class StylusLexer:
                 else line_position + len(t.value)
             prev_type = t.type
             yield t
-        end = LexToken()
-        end.type = 'STYLUS_END'
-        yield end
+        yield self._gen_token('STYLUS_END')
 
     def tokenize(self, string):
         """
@@ -89,3 +92,12 @@ class StylusLexer:
         over all
         """
         return [t for t in self.yield_tokens(string)]
+
+    def input(self, string):
+        self.token_iterator = self.yield_tokens(string)
+
+    def token(self):
+        try:
+            return next(self.token_iterator)
+        except StopIteration:
+            return None

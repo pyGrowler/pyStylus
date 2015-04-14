@@ -9,4 +9,8 @@ import pytest
 def test_constructor():
     styl = StylusParser()
 
-    
+
+def test_block():
+    s = "body"
+    styl = StylusParser()
+    styl.parse(s)

@@ -13,7 +13,7 @@ class StylusParser():
         self.lexer = StylusLexer()
         self.tokens = pystylus.tokens.tokens
         self.stack = [{}]
-        self.parser = yacc(module=self, start="program")
+        self.parser = yacc(module=self, start="stylus")
 
     def _push_scope(self):
         self._scope_stack.append(dict())
@@ -30,15 +30,23 @@ class StylusParser():
             assert hasattr(err, "lineno"), "SytaxError is missing lineno"
             raise
 
-    def p_program(self, p):
+    def p_stylus(self, p):
         """
-            program  :  NAME STYLUS_END
+            stylus  : INDENT block STYLUS_END
         """
         p[0] = p[1]
 
-    def xp_statement_assign(self, p):
+    def p_statement_assign(self, p):
         'statement : NAME EQUALS expression'
         names[t[1]] = p[3]
+
+    def p_statement_expression(self, p):
+        'expression : '
+        pass
+
+    def p_statement_block(self, p):
+        'block : INDENT NAME INDENT'
+        pass
 
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
