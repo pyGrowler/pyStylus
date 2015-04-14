@@ -78,6 +78,9 @@ class StylusLexer:
                 else line_position + len(t.value)
             prev_type = t.type
             yield t
+        end = LexToken()
+        end.type = 'STYLUS_END'
+        yield end
 
     def tokenize(self, string):
         """

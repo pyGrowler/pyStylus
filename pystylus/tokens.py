@@ -43,8 +43,8 @@ tokens += [
     'WS',
     'INDENT',
     'DEDENT',
-    'ENDMARKER',
     'EQUALS',
+    'STYLUS_END',
 ]
 
 t_LONGARROW = r'-->'
