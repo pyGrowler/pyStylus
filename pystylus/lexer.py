@@ -1,5 +1,5 @@
 #
-#
+# pystylus/lexer.py
 #
 
 from ply.lex import (lex, LexToken)
