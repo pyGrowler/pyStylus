@@ -2,11 +2,16 @@
 # pystylus/tokens.py
 #
 
+PREV_TOKEN_TYPE = 'NEWLINE'
+
 tokens = (
+
     'LONGARROW',
     'LONGWAVYARROW',
+
     'ARROW',
     'WAVYARROW',
+    'DOUBLEARROW',
 
     'LT',
     'GT',
@@ -22,16 +27,18 @@ tokens = (
     'NUMBER',
     'NAME',
     'WS',
-    'INDENT',
+    'IDENT',
     'DEDENT',
     'ENDMARKER',
 )
+
 t_LONGARROW = r'-->'
 t_LONGWAVYARROW = r'~~>'
 t_ARROW = r'->'
 t_WAVYARROW = r'~>'
+t_DOUBLEARROW = r'=>'
 
-t_NUMBER = r'\d+'
+t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
 t_LT = r'<'
 t_GT = r'>'
 
@@ -42,22 +49,15 @@ t_OCTOTHORPE = r'\043'  # \043 == '#'
 
 
 def t_comment(t):
-    r"[ ]*//[^\n]*"  # \043 is '#' ; otherwise PLY thinks it's an re comment
+    r"[ ]*//[^\n]*"
     pass
 
 
 def t_WS(t):
     r" [ \t\f]+ "
-    value = t.value.rsplit('\f', 1)[-1]
-    # expand all tabs so they align with eight spaces
-    while 1:
-        pos = value.find('\t')
-        if pos == -1:
-            break
-        filler = ' ' * (8 - (pos % 8))
-        value = value[:pos] + filler + value[pos+1:]
-
-    # if t.lexer.at_line_start and t.lexer.paren_count == 0:
+    t.lexer.stylus._normalize_whitespace(t)
+    # if PREV_TOKEN_TYPE == 'NEWLINE':
+    # t.type = 'IDENT'
     return t
 
 
