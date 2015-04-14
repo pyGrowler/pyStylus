@@ -6,6 +6,7 @@ import pytest
 from ply import lex
 from pystylus import tokens as TOKENS
 
+
 class mock_stylus():
     def _normalize_whitespace(self, t):
         pass

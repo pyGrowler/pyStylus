@@ -11,6 +11,12 @@ def test_constructor():
 
 
 def test_block():
-    s = "body"
+    s = "body\ndiv\n"
     styl = StylusParser()
     styl.parse(s)
+    print(styl.stack)
+    assert styl.stack[0]['selector'] == 'body'
+    assert styl.stack[1]['selector'] == 'div'
+
+if __name__ == '__main__':
+    test_block()

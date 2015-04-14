@@ -40,7 +40,6 @@ class StylusLexer:
             token.value = token.value[:pos] + filler + token.value[pos+1:]
             pos = token.value.find('\t')
 
-
     def _gen_token(self, type, value='', lnum=None, position=0, lexpos=None):
         tok = LexToken()
         tok.lexer = self.lex
