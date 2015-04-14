@@ -24,7 +24,7 @@ class StylusLexer:
         self.tab_expansion = tab_expansion
 
         # pretend that the first character was a newline (helps with INDENT)
-        self.prev_token_type = 'NEWLINE'
+        self.prev_token_type = 'EOL'
 
     def _normalize_whitespace(self, token):
         """
@@ -78,10 +78,13 @@ class StylusLexer:
                     yield self._empty_ident()
             t.line_position = line_position
             line_position = 0 \
-                if t.type is 'NEWLINE' \
+                if t.type is 'EOL' \
                 else line_position + len(t.value)
             prev_type = t.type
             yield t
+        # Always finish the file with a newline, even if not there...
+        if line_position != 0:
+            yield self._gen_token('EOL')
         yield self._gen_token('STYLUS_END')
 
     def tokenize(self, string):

@@ -99,7 +99,7 @@ def test_comment():
     tok = lexer.token()
     assert tok.type == "NAME" and tok.value == "A"
     tok = lexer.token()
-    assert tok.type == "NEWLINE"
+    assert tok.type == "EOL"
     tok = lexer.token()
     assert tok.type == "NAME" and tok.value == "E" and tok.lineno == 2
 

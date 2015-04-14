@@ -11,7 +11,7 @@ def test_constructor():
 
 
 def test_block():
-    s = "body\ndiv\n"
+    s = "body\ndiv"
     styl = StylusParser()
     styl.parse(s)
     print(styl.stack)

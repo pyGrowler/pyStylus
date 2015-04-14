@@ -58,8 +58,7 @@ class StylusParser():
 
     def p_block(self, p):
         '''
-            block : INDENT selector NEWLINE
-                  | INDENT selector
+            block : INDENT selector EOL
         '''
         print("BLOCK FOUND WITH SELECTOR:", p[2])
         p[0] = {

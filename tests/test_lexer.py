@@ -15,7 +15,7 @@ def test_line():
     s = """This is a simple line"""
     lexer = StylusLexer()
     tokens = lexer.tokenize(s)
-    for x in tokens[1:-1]:
+    for x in tokens[1:-2]:
         if x.type == 'WS':
             assert x.value == ' '
         assert x.type in ('NAME', 'WS')
@@ -23,8 +23,8 @@ def test_line():
 
 def test_comment():
     s = """This has   // a comment"""
-    # INDENT + NAME + WS + NAME + STYLUS_END
-    assert len(StylusLexer().tokenize(s)) == 5
+    # INDENT + NAME + WS + NAME + EOL + STYLUS_END
+    assert len(StylusLexer().tokenize(s)) == 6
 
 
 def test_tab_expansion():
@@ -46,6 +46,8 @@ def test_iter_token():
     assert tok.type == 'INDENT' and tok.value == ''
     tok = next(it)
     assert tok.type == 'NAME' and tok.value == 'a' and tok.line_position == 0
+    tok = next(it)
+    assert tok.type == 'EOL'
     tok = next(it)
     assert tok.type == 'STYLUS_END'
 

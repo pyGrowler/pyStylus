@@ -37,7 +37,7 @@ tokens += [
     'LBRACE',
     'RBRACE',
 
-    'NEWLINE',
+    'EOL',
     'NUMBER',
     'NAME',
     'WS',
@@ -93,7 +93,7 @@ def t_WS(t):
 def t_newline(t):
     r"\n+"
     t.lexer.lineno += len(t.value)
-    t.type = "NEWLINE"
+    t.type = "EOL"
     return t
 
 
