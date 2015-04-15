@@ -28,22 +28,27 @@ tokens += [
     'GT',
     'MINUS',
     'TIMES',
+    'EQUALS',
     'DIVIDE',
     'DOT',
     'OCTOTHORPE',
+
+    'SLASH',
+    'BSLASH',
+    'STRUDEL',
 
     'LPAREN',
     'RPAREN',
     'LBRACE',
     'RBRACE',
 
-    'EOL',
     'NUMBER',
     'NAME',
     'WS',
     'INDENT',
     'DEDENT',
-    'EQUALS',
+
+    'EOL',
     'STYLUS_END',
 ]
 
@@ -66,6 +71,10 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 
 t_EQUALS = r'='
+
+t_SLASH = r'/'
+t_BSLASH = r'\\'
+t_STRUDEL = r'@'
 
 
 def t_comment(t):

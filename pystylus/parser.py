@@ -72,6 +72,29 @@ class StylusParser():
         '''
         p[0] = p[1]
 
+    def p_ident_token(self, p):
+        '''
+            ident_token : NAME
+        '''
+        p[0] = p[1]
+
+    def p_function_token(self, p):
+        '''
+            function_token : ident_token t_LPAREN
+        '''
+        p[0] = p[1] + p[2]
+
+    def p_at_keyword_token(self, p):
+        '''
+            at_keyword_token : STRUDEL ident_token
+        '''
+        p[0] = p[1] + p[2]
+
+    def p_hash_token(self, p):
+        '''
+            hash_token : OCTOTHORPE
+
+
     # State 5
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
