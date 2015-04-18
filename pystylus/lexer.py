@@ -145,5 +145,6 @@ class StylusLexer:
         except StopIteration:
             return None
 
+
 class StylusLexerError(Exception):
     pass

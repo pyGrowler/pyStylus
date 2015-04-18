@@ -18,6 +18,12 @@ def test_block():
     assert styl.stack[0]['selector'] == 'body'
     assert styl.stack[1]['selector'] == 'div'
 
+def test_function_definition():
+    s = "A(a,b,c)"
+    styl = StylusParser()
+    styl.parse(s)
+    # assert styl.stack[0] == 1
+
 
 if __name__ == '__main__':
     test_block()

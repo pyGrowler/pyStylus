@@ -12,8 +12,12 @@ from pystylus.tokens import tokens as TOKENS
 class StylusParser():
     """
     The stylus parser interprets a list of LexTokens as a complete stylus
-    template. The parser keeps a list of blocks (self.stack), which have dict
-    objects containing all information about the block.
+    template. This generates an abstract syntax tree out of components defined
+    in pystylus.ast. The parser keeps a list of pystylus.ast.Block objects
+    (self.stack), which contain all information about the string.
+
+    This tree must be run through the... (interperter?) (yet to be implemented)
+    to do the actual CSS generation.
     """
 
     def __init__(self):
@@ -32,7 +36,10 @@ class StylusParser():
         if not src:
             src = "\n"
         try:
-            parse_tree = self.parser.parse(src, lexer=self.lexer, debug=2)
+            parse_tree = self.parser.parse(src,
+                                           lexer=self.lexer,
+                                           debug=debuglevel
+                                           )
         except SyntaxError as err:
             assert hasattr(err, "lineno"), "SytaxError is missing lineno"
             raise
@@ -57,15 +64,26 @@ class StylusParser():
         else:
             p[0] = [p[1]] + p[2]
 
+    #
+    # All block start with indent (may be len 0) and have a header-line, this
+    # *may* be followed by multiple indent lines.
+    #
     def p_block(self, p):
         '''
-            block : INDENT selector EOL
+            block : INDENT header_line EOL
         '''
         print("BLOCK FOUND WITH SELECTOR:", p[2])
         p[0] = {
             'selector': p[2],
             'ident': len(p[1])
         }
+
+    def p_header_line(self, p):
+        '''
+            header_line : NAME
+        '''
+        p[0] = p[1]
+
 
     def p_simple_selector(self, p):
         '''
@@ -85,7 +103,6 @@ class StylusParser():
         '''
         p[0] = p[1] + p[2]
 
-
     def p_argument_list(self, p):
         '''
             argument_list : NAME
@@ -97,7 +114,7 @@ class StylusParser():
         if len(p) == 2:
             p[0] = [p[1]]
         else:
-            p[0] = [p[1]] + p[-1]
+            p[0] = [p[1]] + p[len(p)-1]
 
     def p_at_keyword_token(self, p):
         '''
