@@ -18,5 +18,6 @@ def test_block():
     assert styl.stack[0]['selector'] == 'body'
     assert styl.stack[1]['selector'] == 'div'
 
+
 if __name__ == '__main__':
     test_block()

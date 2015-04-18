@@ -80,9 +80,23 @@ class StylusParser():
 
     def p_function_token(self, p):
         '''
-            function_token : ident_token t_LPAREN
+            function_token : ident_token LPAREN
         '''
         p[0] = p[1] + p[2]
+
+
+    def p_argument_list(self, p):
+        '''
+            argument_list : NAME
+                          | NAME COMMA argument_list
+                          | NAME WS COMMA argument_list
+                          | NAME COMMA WS argument_list
+                          | NAME WS COMMA WS argument_list
+        '''
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = [p[1]] + p[-1]
 
     def p_at_keyword_token(self, p):
         '''
@@ -92,9 +106,9 @@ class StylusParser():
 
     def p_hash_token(self, p):
         '''
-            hash_token : OCTOTHORPE
+            hash_token : OCTOTHORPE ident_token
+        '''
+        p[0] = p[1] + p[2]
 
-
-    # State 5
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)

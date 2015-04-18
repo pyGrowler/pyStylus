@@ -30,6 +30,7 @@ tokens += [
     'TIMES',
     'EQUALS',
     'DIVIDE',
+    'COMMA',
     'DOT',
     'OCTOTHORPE',
 
@@ -62,6 +63,7 @@ t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
 t_LT = r'<'
 t_GT = r'>'
 
+t_COMMA = r','
 t_DOT = r'\.'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
 
