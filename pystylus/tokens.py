@@ -26,6 +26,7 @@ tokens += [
 
     'LT',
     'GT',
+    'PLUS',
     'MINUS',
     'TIMES',
     'EQUALS',
@@ -62,6 +63,9 @@ t_DOUBLEARROW = r'=>'
 t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
 t_LT = r'<'
 t_GT = r'>'
+
+t_PLUS = r'\+'
+t_MINUS = r'\-'
 
 t_COMMA = r','
 t_DOT = r'\.'

@@ -34,6 +34,13 @@ def test_bad_function_definition():
     with pytest.raises(StylusParserError):
         StylusParser().parse("A (a, b,c)")
 
+def test_function_block():
+    s = """add(x, y)
+    x + y
+"""
+    styl = StylusParser()
+    styl.parse(s)
+
 
 if __name__ == '__main__':
     test_block()

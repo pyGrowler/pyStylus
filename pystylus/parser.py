@@ -72,13 +72,13 @@ class StylusParser():
     def p_block(self, p):
         '''
             block : function_block
-                  | selector_block
+                  | style_block
         '''
         p[0] = p[1]
 
-    def p_selector_block(self, p):
+    def p_style_block(self, p):
         '''
-            selector_block : INDENT selector EOL
+            style_block : INDENT selector EOL
         '''
         p[0] = {
             'selector': p[2],
@@ -88,7 +88,7 @@ class StylusParser():
 
     def p_function_block(self, p):
         '''
-            function_block : INDENT function_def EOL
+            function_block : INDENT function_def EOL IDENT math_expression
         '''
         p[0] = AST.Function(p[2]['name'], p[2]['args'], [])
 
@@ -160,9 +160,19 @@ class StylusParser():
         '''
         p[0] = p[1] + p[2]
 
+    def p_math_expression(self, p):
+        '''
+            math_expression : NAME WS PLUS WS NAME EOL
+        '''
+        p[0] = p[1] + p[3]
+
     def p_error(self, p):
-        print("Syntax error at '%s'" % p.value)
-        raise StylusParserError("Syntax error at '%s'" % p.value)
+        err_str = "Syntax error at %d:%d '%s'" % (
+                                    p.lineno,
+                                    p.line_position,
+                                    p.value)
+        print(err_str)
+        raise StylusParserError(err_str)
 
 
 class StylusParserError(Exception):
