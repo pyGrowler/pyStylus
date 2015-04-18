@@ -3,6 +3,8 @@
 #
 
 from ply.lex import (lex, LexToken)
+
+from pystylus.errors import StylusLexerError
 from . import tokens
 
 
@@ -144,7 +146,3 @@ class StylusLexer:
             return next(self.token_iterator)
         except StopIteration:
             return None
-
-
-class StylusLexerError(Exception):
-    pass
