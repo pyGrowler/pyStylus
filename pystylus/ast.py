@@ -13,7 +13,7 @@ class BaseElement:
     def __init__(self, token_list):
         self.tokens = token_list
 
-class Block(self):
+class Block:
     """
     Block - starts with a heading line optionally followed by multiple lines
     """

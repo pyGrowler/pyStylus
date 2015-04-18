@@ -8,6 +8,7 @@ from pystylus.lexer import StylusLexer
 # import pystylus.tokens as tokens
 from pystylus.tokens import tokens as TOKENS
 
+import pystylus.ast as AST
 
 class StylusParser():
     """
@@ -70,13 +71,26 @@ class StylusParser():
     #
     def p_block(self, p):
         '''
-            block : INDENT header_line EOL
+            block : function_block
+                  | selector_block
         '''
-        print("BLOCK FOUND WITH SELECTOR:", p[2])
+        p[0] = p[1]
+
+    def p_selector_block(self, p):
+        '''
+            selector_block : INDENT selector EOL
+        '''
         p[0] = {
             'selector': p[2],
             'ident': len(p[1])
         }
+
+
+    def p_function_block(self, p):
+        '''
+            function_block : INDENT function_def EOL
+        '''
+        p[0] = AST.Function(p[2]['name'], p[2]['args'], [])
 
     def p_header_line(self, p):
         '''
@@ -97,11 +111,29 @@ class StylusParser():
         '''
         p[0] = p[1]
 
-    def p_function_token(self, p):
+    def p_function_def(self, p):
         '''
-            function_token : ident_token LPAREN
+            function_def : ident_token LPAREN RPAREN
+                         | ident_token LPAREN WS RPAREN
         '''
-        p[0] = p[1] + p[2]
+        p[0] = {'name': p[1], 'args': []}
+
+    def p_function_def_with_args_0(self, p):
+        '''
+            function_def : ident_token LPAREN argument_list RPAREN
+                         | ident_token LPAREN argument_list WS RPAREN
+        '''
+        p[0] = {'name': p[1], 'args': p[3]}
+        # p[0] = AST.Function(p[1], p[3], [])
+
+    def p_function_def_with_args_1(self, p):
+        '''
+            function_def : ident_token LPAREN WS argument_list RPAREN
+                         | ident_token LPAREN WS argument_list WS RPAREN
+        '''
+        p[0] = {'name': p[1], 'args': p[4]}
+        # p[0] = AST.Function(p[1], p[4], [])
+
 
     def p_argument_list(self, p):
         '''
@@ -130,3 +162,8 @@ class StylusParser():
 
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
+        raise StylusParserError("Syntax error at '%s'" % p.value)
+
+
+class StylusParserError(Exception):
+    pass
