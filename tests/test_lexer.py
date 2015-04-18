@@ -2,7 +2,7 @@
 # tests/test_lexer.py
 #
 
-from pystylus.lexer import StylusLexer
+from pystylus.lexer import (StylusLexer, StylusLexerError)
 import pytest
 
 
@@ -55,6 +55,17 @@ def test_iter_token():
         next(it)
 
     # it = iter()
+
+def test_dedent():
+    # INDENT NAME NEWLINE INDENT B NEWLINE DEDENT NAME
+    s = "a\n b\nc"
+    assert StylusLexer().tokenize(s)[6].type == 'DEDENT'
+
+def test_bad_dedent():
+
+    s = "a\n  b\n c"
+    with pytest.raises(StylusLexerError):
+        StylusLexer().tokenize(s)
 
 
 def test_indent():

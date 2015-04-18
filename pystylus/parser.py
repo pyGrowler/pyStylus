@@ -36,6 +36,7 @@ class StylusParser():
         except SyntaxError as err:
             assert hasattr(err, "lineno"), "SytaxError is missing lineno"
             raise
+        return parse_tree
 
     def p_stylus(self, p):
         '''

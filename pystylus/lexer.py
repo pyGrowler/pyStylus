@@ -91,18 +91,28 @@ class StylusLexer:
                 else:
                     # if shorter than previous indent, this must be a dedent
                     if len(t.value) < indent_stack[-1]:
+                        # loop through indents, finding one that matches
                         while len(indent_stack):
-                            # remove last element
-                            indent_stack.pop()
-
+                            # if in-between
                             if len(t.value) == indent_stack[-1]:
                                 t.type = 'DEDENT'
                                 break
+
                             elif len(t.value) > indent_stack[-1]:
-                                raise Exception("Misaligned DEDENT")
+                                raise StylusLexerError("Misaligned DEDENT")
+
+                            # remove last element
+                            indent_stack.pop()
+
+                        # len(indent_stack)
+                        if len(indent_stack) == 0:
+                            raise StylusLexerError("Misaligned DEDENT")
+
                     else:
+                        # if not shorter, this is an indent
                         t.type = 'INDENT'
 
+                        # if LONGER, push length to stack
                         if len(t.value) > indent_stack[-1]:
                             indent_stack.append(len(t.value))
 
@@ -134,3 +144,6 @@ class StylusLexer:
             return next(self.token_iterator)
         except StopIteration:
             return None
+
+class StylusLexerError(Exception):
+    pass
