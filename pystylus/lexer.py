@@ -69,19 +69,50 @@ class StylusLexer:
         A generator which tokenizes a string into a series of pystylus tokens.
         """
         self.lex.input(string)
+        indent_stack = []  # stack of indent lengths
         line_position = 0
         for t in iter(self.lex.token, None):
             if line_position is 0:
-                if t.type == 'WS':
-                    t.type = 'INDENT'
-                else:
+                # if starting a line without whitespace
+                if t.type != 'WS':
+                    # dedent all indents
+                    while len(indent_stack) > 0:
+                        val = indent_stack.pop()
+                        yield self._gen_token('DEDENT', value=val)
+                    # return empty indent
                     yield self._empty_ident()
+
+                # if nothing on the indent_stack - this must be an indent
+                elif len(indent_stack) is 0:
+                    t.type = 'INDENT'
+                    indent_stack.append(len(t.value))
+
+                # We have read in whitespace, determine if in- or de- dent
+                else:
+                    # if shorter than previous indent, this must be a dedent
+                    if len(t.value) < indent_stack[-1]:
+                        while len(indent_stack):
+                            # remove last element
+                            indent_stack.pop()
+
+                            if len(t.value) == indent_stack[-1]:
+                                t.type = 'DEDENT'
+                                break
+                            elif len(t.value) > indent_stack[-1]:
+                                raise Exception("Misaligned DEDENT")
+                    else:
+                        t.type = 'INDENT'
+
+                        if len(t.value) > indent_stack[-1]:
+                            indent_stack.append(len(t.value))
+
             t.line_position = line_position
             line_position = 0 \
                 if t.type is 'EOL' \
                 else line_position + len(t.value)
             prev_type = t.type
             yield t
+
         # Always finish the file with a newline, even if not there...
         if line_position != 0:
             yield self._gen_token('EOL')
