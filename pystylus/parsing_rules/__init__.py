@@ -22,21 +22,6 @@ def p_stylus(p):
     '''
     p[0] = p[1]
 
-
-def p_block_list(p):
-    '''
-        block_list : block block_list
-                   | block
-    '''
-    # Handle the singular case
-    if (len(p) == 2):
-        print("BASE CASE: ", p[1])
-        p[0] = [p[1]]
-    # If multiple, add the first to the beginning of the list
-    else:
-        p[0] = [p[1]] + p[2]
-
-
 def p_simple_selector(p):
     '''
         selector : NAME
@@ -52,7 +37,7 @@ def p_math_expression(p):
 
 
 def p_error(p):
-    err_str = "Syntax error at %d:%d '%s'" % (
+    err_str = "Parsing error at %d:%d '%s'" % (
                                 p.lineno,
                                 p.line_position,
                                 p.value)

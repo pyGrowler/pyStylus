@@ -43,6 +43,9 @@ class StylusLexer:
             pos = token.value.find('\t')
 
     def _gen_token(self, type, value='', lnum=None, position=0, lexpos=None):
+        """
+        Generates a LexToken with the paramaters given.
+        """
         tok = LexToken()
         tok.lexer = self.lex
         tok.type = type
@@ -95,6 +98,7 @@ class StylusLexer:
                     if len(t.value) < indent_stack[-1]:
                         # loop through indents, finding one that matches
                         while len(indent_stack):
+
                             # if in-between
                             if len(t.value) == indent_stack[-1]:
                                 t.type = 'DEDENT'
@@ -111,6 +115,10 @@ class StylusLexer:
                             raise StylusLexerError("Misaligned DEDENT")
 
                     else:
+                        ## CHANGE - Only INDENT on the first indentation!
+                        line_position += len(t.value)
+                        continue
+
                         # if not shorter, this is an indent
                         t.type = 'INDENT'
 
