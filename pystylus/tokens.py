@@ -5,6 +5,7 @@
 keyword_list = [
     'if',
     'for',
+    'return',
 ]
 
 RESERVED = dict()

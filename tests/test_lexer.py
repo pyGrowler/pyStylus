@@ -72,3 +72,10 @@ def test_bad_dedent():
 def test_indent():
     s = "  "
     assert StylusLexer().tokenize(s)[0].type == 'INDENT'
+
+
+def test_return():
+    assert StylusLexer().tokenize("return")[1].type == 'RETURN'
+
+def test_if():
+    assert StylusLexer().tokenize("if x")[1].type == 'IF'
