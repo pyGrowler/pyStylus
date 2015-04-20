@@ -35,6 +35,7 @@ tokens += [
     'COMMA',
     'DOT',
     'OCTOTHORPE',
+    'COLON',
 
     'SLASH',
     'BSLASH',
@@ -53,8 +54,9 @@ tokens += [
 
     'COLORHEX',
 
-    'EOL',
-    'STYLUS_END',
+    'BOL', # Beginning of line
+    'EOL', # End of line
+    'STYLUS_END', # End of stylus content (file or string)
 ]
 
 t_LONGARROW = r'-->'
@@ -73,6 +75,7 @@ t_MINUS = r'\-'
 t_COMMA = r','
 t_DOT = r'\.'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
+t_COLON = r':'
 
 t_LPAREN = r'\('
 t_RPAREN = r'\)'

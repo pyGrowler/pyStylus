@@ -126,3 +126,14 @@ def test_multiline_comment():
     assert tok.type == "NAME" and tok.value == "A"
     with pytest.raises(Exception):
         tok = lexer.token()
+
+def test_function_tokens():
+    s = "foo()"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "foo"
+    tok = lexer.token()
+    assert tok.type == "LPAREN"
+    tok = lexer.token()
+    assert tok.type == "RPAREN"

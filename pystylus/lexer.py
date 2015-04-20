@@ -85,7 +85,8 @@ class StylusLexer:
                         val = indent_stack.pop()
                         yield self._gen_token('DEDENT', value=val)
                     # return empty indent
-                    yield self._empty_ident()
+                    # yield self._empty_ident()
+                    # yield self._get_token('BOL')
 
                 # if nothing on the indent_stack - this must be an indent
                 elif len(indent_stack) is 0:
@@ -136,6 +137,12 @@ class StylusLexer:
         # Always finish the file with a newline, even if not there...
         if line_position != 0:
             yield self._gen_token('EOL')
+
+        while len(indent_stack) != 0:
+            l = indent_stack.pop()
+            yield self._gen_token('DEDENT', value=' '*l)
+            # yield self._gen_token('EOL')4
+
         yield self._gen_token('STYLUS_END')
 
     def tokenize(self, string):

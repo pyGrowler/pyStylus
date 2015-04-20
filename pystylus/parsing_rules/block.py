@@ -68,11 +68,26 @@ def p_header_line(p):
     p[0] = p[1]
 
 
+def p_style_statement(p):
+    '''
+        style_statement : simple_statement
+    '''
+    p[0] = p[1]
+
+
 def p_simple_style_statement(p):
     '''
         simple_statement : NAME WS name_list
     '''
-    p[0] = p[1]
+    p[0] = [p[1], p[3]]
+
+
+def p_simple_style_statement(p):
+    '''
+        simple_statement : NAME COLON WS name_list
+                         | NAME WS COLON WS name_list
+    '''
+    p[0] = [p[1], p[len(p)-1]]
 
 
 def p_name_list(p):

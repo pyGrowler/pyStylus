@@ -16,11 +16,13 @@ from .identifiers import *
 from .block import *
 from .function import *
 
+
 def p_stylus(p):
     '''
         stylus  : block_list STYLUS_END
     '''
     p[0] = p[1]
+
 
 def p_simple_selector(p):
     '''

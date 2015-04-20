@@ -33,7 +33,7 @@ class StylusParser():
     def _pop_scope(self):
         self._scope_stack.pop()
 
-    def parse(self, src, filename='', debuglevel=0):
+    def parse(self, src, filename='', debuglevel=10):
         if not src:
             src = "\n"
         try:

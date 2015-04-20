@@ -23,8 +23,8 @@ def test_line():
 
 def test_comment():
     s = """This has   // a comment"""
-    # INDENT + NAME + WS + NAME + EOL + STYLUS_END
-    assert len(StylusLexer().tokenize(s)) == 6
+    # NAME + WS + NAME + EOL + STYLUS_END
+    assert len(StylusLexer().tokenize(s)) == 5
 
 
 def test_tab_expansion():
@@ -35,15 +35,13 @@ def test_tab_expansion():
     assert StylusLexer().tokenize(s + ' ')[0].value == ' '*9
 
     s = "X\tY"
-    assert StylusLexer().tokenize(s)[2].type == 'WS'
-    assert StylusLexer().tokenize(s)[2].value == ' '*8
+    assert StylusLexer().tokenize(s)[1].type == 'WS'
+    assert StylusLexer().tokenize(s)[1].value == ' '*8
 
 
 def test_iter_token():
     s = "a"
     it = StylusLexer().yield_tokens(s)
-    tok = next(it)
-    assert tok.type == 'INDENT' and tok.value == ''
     tok = next(it)
     assert tok.type == 'NAME' and tok.value == 'a' and tok.line_position == 0
     tok = next(it)
@@ -60,7 +58,7 @@ def test_iter_token():
 def test_dedent():
     # INDENT NAME NEWLINE INDENT B NEWLINE DEDENT NAME
     s = "a\n b\nc"
-    assert StylusLexer().tokenize(s)[6].type == 'DEDENT'
+    assert StylusLexer().tokenize(s)[5].type == 'DEDENT'
 
 
 def test_bad_dedent():
@@ -75,7 +73,15 @@ def test_indent():
 
 
 def test_return():
-    assert StylusLexer().tokenize("return")[1].type == 'RETURN'
+    assert StylusLexer().tokenize("return")[0].type == 'RETURN'
+
 
 def test_if():
-    assert StylusLexer().tokenize("if x")[1].type == 'IF'
+    assert StylusLexer().tokenize("if x")[0].type == 'IF'
+
+
+def test_function_tokens():
+    toks = StylusLexer().tokenize("foo()")
+    assert toks[0].type == "NAME" and toks[0].value == "foo"
+    assert toks[1].type == "LPAREN"
+    assert toks[2].type == "RPAREN"

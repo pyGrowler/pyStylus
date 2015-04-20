@@ -7,9 +7,9 @@ import pystylus.ast as AST
 
 def p_function_block(p):
     '''
-        function_block : INDENT function_def EOL block_contents
+        function_block : function_def EOL INDENT function_contents DEDENT EOL
     '''
-    p[0] = AST.Function(p[2]['name'], p[2]['args'], [])
+    p[0] = AST.Function(p[1]['name'], p[1]['args'], p[4])
 
 
 def p_function_def(p):
@@ -37,7 +37,9 @@ def p_function_def_with_args_1(p):
     p[0] = {'name': p[1], 'args': p[4]}
     # p[0] = AST.Function(p[1], p[4], [])
 
-
+#
+# argument_list is a comma separated list of names
+#
 def p_argument_list(p):
     '''
         argument_list : NAME
@@ -51,11 +53,29 @@ def p_argument_list(p):
     else:
         p[0] = [p[1]] + p[len(p)-1]
 
+
+def p_function_contents(p):
+    '''
+        function_contents : function_statement
+                          | function_statement EOL function_contents
+    '''
+    p[0] = [p[1]] if len(p) == 2 else [p[1]] + p[3]
+
+
+def p_function_statement(p):
+    '''
+        function_statement : return_statement
+                           | math_expression
+    '''
+    p[0] = p[1]
+
+
 def p_return_statement(p):
     '''
-        return_statement : RETURN NAME
+        return_statement : RETURN
+                         | RETURN WS NAME
     '''
-    p[0] = p[2]
+    p[0] = None if len(p) == 2 else p[3]
 
 
 def p_math_expression(p):
