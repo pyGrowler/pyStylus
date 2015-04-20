@@ -46,6 +46,7 @@ tokens += [
     'LBRACE',
     'RBRACE',
 
+    'SUFFIXED_NUMBER',
     'NUMBER',
     'NAME',
     'WS',
@@ -65,7 +66,9 @@ t_ARROW = r'->'
 t_WAVYARROW = r'~>'
 t_DOUBLEARROW = r'=>'
 
+t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
 t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
+
 t_LT = r'<'
 t_GT = r'>'
 
@@ -120,7 +123,7 @@ def t_newline(t):
 
 
 def t_NAME(t):
-    r"[a-zA-Z_][a-zA-Z0-9_]*"
+    r"[a-zA-Z_-][a-zA-Z0-9_-]*"
     t.type = RESERVED.get(t.value, "NAME")
     return t
 

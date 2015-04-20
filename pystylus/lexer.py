@@ -78,8 +78,11 @@ class StylusLexer:
         line_position = 0
         for t in iter(self.lex.token, None):
             if line_position is 0:
+                if t.type == 'EOL':
+                    continue
+
                 # if starting a line without whitespace
-                if t.type != 'WS':
+                elif t.type != 'WS':
                     # dedent all indents
                     while len(indent_stack) > 0:
                         val = indent_stack.pop()

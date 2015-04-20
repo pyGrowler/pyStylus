@@ -25,7 +25,3 @@ body
   margin 0 0 30px 30px
 """
     res = StylusParser().parse(s)
-
-
-if __name__ == '__main__':
-    test_simple_style()
