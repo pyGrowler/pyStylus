@@ -3,19 +3,12 @@
 #
 
 
-def p_node_list(p):
-    '''
-        node_list : node node_list
-                  | node
-    '''
-    p[0] = [p[1]] if len(p) == 2 else [p[1]] + p[2]
-
-
 def p_node(p):
     '''
         node : style_node
     '''
     p[0] = p[1]
+
 
 def p_style_node(p):
     '''
@@ -40,6 +33,7 @@ def p_style_statement(p):
     '''
     p[0] = [p[1], p[len(p)-1]]
 
+
 def p_id_selector(p):
     '''
         selector : NAME
@@ -53,6 +47,7 @@ def p_id_selector(p):
         p[0] += p[2],
     if len(p) == 4:
         p[0] += p[3]
+
 
 def p_name_list(p):
     '''
@@ -70,6 +65,7 @@ def p_style_number(p):
                      | NUMBER
     '''
     p[0] = str(p[1])
+
 
 # def p_class_selector(p):
 #     '''

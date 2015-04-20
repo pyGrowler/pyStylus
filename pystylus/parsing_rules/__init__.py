@@ -12,6 +12,7 @@ from pystylus.tokens import tokens
 import pystylus.ast as AST
 from pystylus.errors import StylusParserError
 
+from .nodes import *
 from .style import *
 
 # from .identifiers import *
