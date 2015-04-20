@@ -103,6 +103,13 @@ def p_specific_sibling_selector(p):
     p[0] = p[1] + " + " + p[len(p)-1]
 
 
+def p_universal_selector(p):
+    '''
+        selector : ASTERISK
+    '''
+    p[0] = p[1]
+
+
 def p_name_list(p):
     '''
         name_list : NAME

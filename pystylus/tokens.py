@@ -35,6 +35,7 @@ tokens += [
     'DIVIDE',
     'COMMA',
     'DOT',
+    'ASTERISK',
     'OCTOTHORPE',
     'COLON',
     'TILDE',
@@ -77,6 +78,7 @@ t_MINUS = r'\-'
 
 t_COMMA = r','
 t_DOT = r'\.'
+t_ASTERISK = r'\*'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
 t_COLON = r':'
 
