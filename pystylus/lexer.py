@@ -89,7 +89,7 @@ class StylusLexer:
                     # dedent all indents
                     while len(indent_stack) > 0:
                         val = indent_stack.pop()
-                        yield self._gen_token('DEDENT', value=val)
+                        yield self._gen_token('DEDENT', value=' '*val)
 
                 # if nothing on the indent_stack - this must be an INDENT
                 elif len(indent_stack) is 0:
@@ -108,6 +108,7 @@ class StylusLexer:
 
                     for d in reversed(deds):
                         yield self._gen_token('DEDENT', value=' '*d)
+
                     line_position = len(t.value)
                     continue
 
