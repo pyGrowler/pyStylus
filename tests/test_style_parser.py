@@ -35,3 +35,10 @@ def test_selector_list():
     res = StylusParser().parse(s)
     assert isinstance(res[0], AST.StyleNode)
     assert str(res[0]) == "div, body{background:blue}"
+
+
+def test_universal_selector():
+    s = "*\n color red"
+    res = StylusParser().parse(s)
+    assert isinstance(res[0], AST.StyleNode)
+    assert res[0].selectors[0] == '*'
