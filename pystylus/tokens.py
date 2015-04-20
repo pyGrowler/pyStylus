@@ -5,6 +5,7 @@
 keyword_list = [
     'if',
     'for',
+    'return',
 ]
 
 RESERVED = dict()
@@ -26,6 +27,7 @@ tokens += [
 
     'LT',
     'GT',
+    'PLUS',
     'MINUS',
     'TIMES',
     'EQUALS',
@@ -33,6 +35,7 @@ tokens += [
     'COMMA',
     'DOT',
     'OCTOTHORPE',
+    'COLON',
 
     'SLASH',
     'BSLASH',
@@ -43,14 +46,18 @@ tokens += [
     'LBRACE',
     'RBRACE',
 
+    'SUFFIXED_NUMBER',
     'NUMBER',
     'NAME',
     'WS',
     'INDENT',
     'DEDENT',
 
-    'EOL',
-    'STYLUS_END',
+    'COLORHEX',
+
+    'BOL', # Beginning of line
+    'EOL', # End of line
+    'STYLUS_END', # End of stylus content (file or string)
 ]
 
 t_LONGARROW = r'-->'
@@ -59,13 +66,19 @@ t_ARROW = r'->'
 t_WAVYARROW = r'~>'
 t_DOUBLEARROW = r'=>'
 
+t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
 t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
+
 t_LT = r'<'
 t_GT = r'>'
+
+t_PLUS = r'\+'
+t_MINUS = r'\-'
 
 t_COMMA = r','
 t_DOT = r'\.'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
+t_COLON = r':'
 
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
@@ -78,6 +91,7 @@ t_SLASH = r'/'
 t_BSLASH = r'\\'
 t_STRUDEL = r'@'
 
+t_COLORHEX = r'\#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})'
 
 def t_comment(t):
     r"[ ]*//[^\n]*"
@@ -109,7 +123,7 @@ def t_newline(t):
 
 
 def t_NAME(t):
-    r"[a-zA-Z_][a-zA-Z0-9_]*"
+    r"[a-zA-Z_-][a-zA-Z0-9_-]*"
     t.type = RESERVED.get(t.value, "NAME")
     return t
 

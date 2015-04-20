@@ -3,6 +3,8 @@
 #
 
 from ply.lex import (lex, LexToken)
+
+from pystylus.errors import StylusLexerError
 from . import tokens
 
 
@@ -41,6 +43,9 @@ class StylusLexer:
             pos = token.value.find('\t')
 
     def _gen_token(self, type, value='', lnum=None, position=0, lexpos=None):
+        """
+        Generates a LexToken with the paramaters given.
+        """
         tok = LexToken()
         tok.lexer = self.lex
         tok.type = type
@@ -73,14 +78,18 @@ class StylusLexer:
         line_position = 0
         for t in iter(self.lex.token, None):
             if line_position is 0:
+                if t.type == 'EOL':
+                    continue
+
                 # if starting a line without whitespace
-                if t.type != 'WS':
+                elif t.type != 'WS':
                     # dedent all indents
                     while len(indent_stack) > 0:
                         val = indent_stack.pop()
                         yield self._gen_token('DEDENT', value=val)
                     # return empty indent
-                    yield self._empty_ident()
+                    # yield self._empty_ident()
+                    # yield self._get_token('BOL')
 
                 # if nothing on the indent_stack - this must be an indent
                 elif len(indent_stack) is 0:
@@ -93,6 +102,7 @@ class StylusLexer:
                     if len(t.value) < indent_stack[-1]:
                         # loop through indents, finding one that matches
                         while len(indent_stack):
+
                             # if in-between
                             if len(t.value) == indent_stack[-1]:
                                 t.type = 'DEDENT'
@@ -109,6 +119,10 @@ class StylusLexer:
                             raise StylusLexerError("Misaligned DEDENT")
 
                     else:
+                        ## CHANGE - Only INDENT on the first indentation!
+                        line_position += len(t.value)
+                        continue
+
                         # if not shorter, this is an indent
                         t.type = 'INDENT'
 
@@ -126,6 +140,12 @@ class StylusLexer:
         # Always finish the file with a newline, even if not there...
         if line_position != 0:
             yield self._gen_token('EOL')
+
+        while len(indent_stack) != 0:
+            l = indent_stack.pop()
+            yield self._gen_token('DEDENT', value=' '*l)
+            # yield self._gen_token('EOL')
+
         yield self._gen_token('STYLUS_END')
 
     def tokenize(self, string):
@@ -144,7 +164,3 @@ class StylusLexer:
             return next(self.token_iterator)
         except StopIteration:
             return None
-
-
-class StylusLexerError(Exception):
-    pass

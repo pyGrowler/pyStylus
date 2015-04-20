@@ -20,8 +20,13 @@ def test_block():
     assert styl.stack[1]['selector'] == 'div'
 
 
+def test_funcdef_no_args():
+    s = 'foo()\n return'
+    StylusParser().parse(s)
+
+
 def test_function_definition():
-    s = "A(a, b,c)"
+    s = "foo(a, b,c)\n return a"
     styl = StylusParser()
     styl.parse(s)
     func = styl.stack[0]
@@ -32,7 +37,20 @@ def test_function_definition():
 
 def test_bad_function_definition():
     with pytest.raises(StylusParserError):
-        StylusParser().parse("A (a, b,c)")
+        StylusParser().parse("A (a, b,c)\n return")
+
+
+def test_empty_function():
+    with pytest.raises(StylusParserError):
+        StylusParser().parse("A(a)\n")
+
+
+def xtest_function_block():
+    s = """add(x, y)
+    x + y
+"""
+    styl = StylusParser()
+    styl.parse(s)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@
 Elements of a pystylus abstract-syntax-tree
 """
 
+
 class BaseElement:
     """
     Base class for all AST classes.
@@ -13,6 +14,7 @@ class BaseElement:
     def __init__(self, token_list):
         self.tokens = token_list
 
+
 class Block:
     """
     Block - starts with a heading line optionally followed by multiple lines
@@ -20,6 +22,7 @@ class Block:
 
     def __init__(self, header_line, statements):
         pass
+
 
 class Function:
 
