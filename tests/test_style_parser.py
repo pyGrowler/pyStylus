@@ -33,3 +33,5 @@ def test_selector_list():
 
     s = "div\nbody\n background blue"
     res = StylusParser().parse(s)
+    assert isinstance(res[0], AST.StyleNode)
+    assert str(res[0]) == "div, body{background:blue}"

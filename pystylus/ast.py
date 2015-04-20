@@ -24,9 +24,23 @@ class Block:
         pass
 
 
-class Function:
+class FunctionNode:
 
     def __init__(self, function_name, argument_list, content):
         self.name = function_name
         self.args = argument_list
         self.content = content
+
+
+class StyleNode:
+
+    def __init__(self, selectors, contents):
+        self.selectors = selectors
+        self.contents = [rule[0] + ':' + ' '.join(rule[1])
+                         for rule in contents['rules']]
+
+    def __str__(self):
+        print('C', self.contents)
+        s = ', '.join(self.selectors)
+        s += '{' + ';'.join(self.contents) + '}'
+        return s

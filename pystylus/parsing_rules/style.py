@@ -2,6 +2,8 @@
 # pystylus/parsing_rules/style.py
 #
 
+from pystylus.ast import StyleNode
+
 
 def p_node(p):
     '''
@@ -14,7 +16,7 @@ def p_style_node(p):
     '''
         style_node : selector_list INDENT style_contents DEDENT
     '''
-    p[0] = p[1]
+    p[0] = StyleNode(p[1], p[3])
 
 
 def p_style_contents(p):
@@ -22,7 +24,10 @@ def p_style_contents(p):
         style_contents : style_statement EOL
                        | style_statement EOL style_contents
     '''
-    p[0] = [p[1]] if len(p) == 3 else [p[1]] + p[3]
+    if len(p) == 3:
+        p[0] = {'rules': [p[1]]}
+    else:
+        p[0] = {'rules': p[3]['rules'] + p[1]}
 
 
 def p_style_statement(p):
@@ -31,7 +36,7 @@ def p_style_statement(p):
                         | NAME COLON WS name_list
                         | NAME WS COLON WS name_list
     '''
-    p[0] = [p[1], p[len(p)-1]]
+    p[0] = (p[1], p[len(p)-1])
 
 
 def p_selector_list(p):
