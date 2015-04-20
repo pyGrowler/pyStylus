@@ -68,11 +68,12 @@ def p_header_line(p):
     p[0] = p[1]
 
 
-def p_simple_statement(p):
+def p_simple_style_statement(p):
     '''
-        simple_statement : NAME WS NAME
+        simple_statement : NAME WS name_list
     '''
     p[0] = p[1]
+
 
 def p_name_list(p):
     '''

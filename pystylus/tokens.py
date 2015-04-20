@@ -51,6 +51,8 @@ tokens += [
     'INDENT',
     'DEDENT',
 
+    'COLORHEX',
+
     'EOL',
     'STYLUS_END',
 ]
@@ -83,6 +85,7 @@ t_SLASH = r'/'
 t_BSLASH = r'\\'
 t_STRUDEL = r'@'
 
+t_COLORHEX = r'\#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})'
 
 def t_comment(t):
     r"[ ]*//[^\n]*"
