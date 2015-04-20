@@ -25,3 +25,11 @@ body
   margin 0 0 30px 30px
 """
     res = StylusParser().parse(s)
+
+
+def test_selector_list():
+    s = "div,body\n background blue"
+    res = StylusParser().parse(s)
+
+    s = "div\nbody\n background blue"
+    res = StylusParser().parse(s)

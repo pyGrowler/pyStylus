@@ -12,7 +12,7 @@ def p_node(p):
 
 def p_style_node(p):
     '''
-        style_node : selector EOL INDENT style_contents DEDENT
+        style_node : selector_list INDENT style_contents DEDENT
     '''
     p[0] = p[1]
 
@@ -34,7 +34,19 @@ def p_style_statement(p):
     p[0] = [p[1], p[len(p)-1]]
 
 
-def p_id_selector(p):
+def p_selector_list(p):
+    '''
+        selector_list : selector EOL
+                      | selector COMMA selector_list
+                      | selector WS COMMA selector_list
+                      | selector WS COMMA WS selector_list
+                      | selector COMMA WS selector_list
+                      | selector EOL selector_list
+    '''
+    p[0] = [p[1]] if len(p) <= 3 else [p[1]] + p[len(p)-1]
+
+
+def p_selector(p):
     '''
         selector : NAME
                  | OCTOTHORPE NAME
@@ -47,7 +59,6 @@ def p_id_selector(p):
         p[0] += p[2],
     if len(p) == 4:
         p[0] += p[3]
-
 
 def p_name_list(p):
     '''
