@@ -141,7 +141,7 @@ class StylusLexer:
         while len(indent_stack) != 0:
             l = indent_stack.pop()
             yield self._gen_token('DEDENT', value=' '*l)
-            # yield self._gen_token('EOL')4
+            # yield self._gen_token('EOL')
 
         yield self._gen_token('STYLUS_END')
 
