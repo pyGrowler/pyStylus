@@ -37,16 +37,15 @@ def p_style_statement(p):
 def p_id_selector(p):
     '''
         selector : NAME
-                 | OCTOTHORPE NAME
-                 | selector OCTOTHORPE NAME
-                 | DOT NAME
-                 | selector DOT NAME
+                 | CLASSNAME
+                 | IDNAME
+                 | selector NAME
+                 | selector CLASSNAME
+                 | selector IDNAME
     '''
     p[0] = p[1]
-    if len(p) >= 3:
-        p[0] += p[2],
-    if len(p) == 4:
-        p[0] += p[3]
+    if len(p) == 3:
+        p[0] += p[2]
 
 
 def p_name_list(p):

@@ -137,3 +137,27 @@ def test_function_tokens():
     assert tok.type == "LPAREN"
     tok = lexer.token()
     assert tok.type == "RPAREN"
+
+
+def test_classname_token():
+    s = ".html_class"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "CLASSNAME" and tok.value == ".html_class"
+
+
+def test_idname_token():
+    s = "#an_id"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "IDNAME" and tok.value == "#an_id"
+
+
+def test_pseudoclass_token():
+    s = ":first-child"
+    lexer = lex.lex(module=TOKENS)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "PSEUDOCLASS" and tok.value == ":first-child"

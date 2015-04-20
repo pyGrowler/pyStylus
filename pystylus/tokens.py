@@ -38,6 +38,10 @@ tokens += [
     'OCTOTHORPE',
     'COLON',
 
+    'PSEUDOCLASS',
+    'CLASSNAME',
+    'IDNAME',
+
     'SLASH',
     'BSLASH',
     'STRUDEL',
@@ -66,6 +70,13 @@ t_LONGWAVYARROW = r'~~>'
 t_ARROW = r'->'
 t_WAVYARROW = r'~>'
 t_DOUBLEARROW = r'=>'
+
+name_regex = r"[a-zA-Z_-][a-zA-Z0-9_-]*"
+
+t_PSEUDOCLASS = r':' + name_regex
+t_CLASSNAME = r'\.' + name_regex
+t_IDNAME = r'\#' + name_regex
+
 
 t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
 t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
