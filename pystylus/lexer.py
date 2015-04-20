@@ -120,16 +120,16 @@ class StylusLexer:
                             raise StylusLexerError("Misaligned DEDENT")
 
                     else:
-                        ## CHANGE - Only INDENT on the first indentation!
-                        line_position += len(t.value)
-                        continue
-
                         # if not shorter, this is an indent
                         t.type = 'INDENT'
 
                         # if LONGER, push length to stack
                         if len(t.value) > indent_stack[-1]:
                             indent_stack.append(len(t.value))
+                        else:
+                            # CHANGE - Only INDENT on the first new indentation
+                            line_position += len(t.value)
+                            continue
 
             t.line_position = line_position
             line_position = 0 \

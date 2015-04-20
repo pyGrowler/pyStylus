@@ -94,3 +94,19 @@ def test_function_unicode():
     assert toks[1].type == "LPAREN"
     assert toks[4].type == "INDENT"
     assert toks[5].type == "RETURN"
+
+
+def test_multiple_indent():
+    toks = StylusLexer().tokenize("a\n b\n  c\n")
+    types = ['NAME', 'EOL', 'INDENT', 'NAME', 'EOL', 'INDENT', 'NAME', 'EOL',
+             'DEDENT', 'DEDENT', 'STYLUS_END']
+    for tok, type in zip(toks, types):
+        assert tok.type == type
+
+
+def test_single_indent():
+    toks = StylusLexer().tokenize("a\n b\n c\n")
+    types = ['NAME', 'EOL', 'INDENT', 'NAME', 'EOL', 'NAME', 'EOL',
+             'DEDENT', 'STYLUS_END']
+    for tok, type in zip(toks, types):
+        assert tok.type == type
