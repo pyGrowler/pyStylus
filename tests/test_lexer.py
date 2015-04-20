@@ -85,3 +85,12 @@ def test_function_tokens():
     assert toks[0].type == "NAME" and toks[0].value == "foo"
     assert toks[1].type == "LPAREN"
     assert toks[2].type == "RPAREN"
+
+
+def test_function_unicode():
+    toks = StylusLexer().tokenize("π()\n return 3.141")
+    assert toks[0].type == "NAME"
+    assert toks[0].value == "π"
+    assert toks[1].type == "LPAREN"
+    assert toks[4].type == "INDENT"
+    assert toks[5].type == "RETURN"

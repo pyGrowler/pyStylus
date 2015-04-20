@@ -7,6 +7,7 @@ from ply.lex import (lex, LexToken)
 from pystylus.errors import StylusLexerError
 from . import tokens
 
+from re import UNICODE
 
 class StylusLexer:
     """
@@ -21,7 +22,7 @@ class StylusLexer:
         Constructs the lexer by creating a ply.lex.lex instance with the
         pystylus.tokens as the module parameter.
         """
-        self.lex = lex(module=tokens)
+        self.lex = lex(module=tokens, reflags=UNICODE)
         self.lex.stylus = self
         self.tab_expansion = tab_expansion
 

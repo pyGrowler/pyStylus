@@ -6,6 +6,7 @@ import pytest
 from ply import lex
 from pystylus import tokens as TOKENS
 
+from re import UNICODE
 
 class mock_stylus():
     def _normalize_whitespace(self, t):
@@ -137,3 +138,10 @@ def test_function_tokens():
     assert tok.type == "LPAREN"
     tok = lexer.token()
     assert tok.type == "RPAREN"
+
+def test_unicode_token():
+    s = "πpy"
+    lexer = lex.lex(module=TOKENS, reflags=UNICODE)
+    lexer.input(s)
+    tok = lexer.token()
+    assert tok.type == "NAME" and tok.value == "πpy"
