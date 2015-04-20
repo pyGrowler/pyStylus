@@ -37,6 +37,7 @@ tokens += [
     'DOT',
     'OCTOTHORPE',
     'COLON',
+    'TILDE',
 
     'SLASH',
     'BSLASH',
@@ -87,6 +88,7 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 
 t_EQUALS = r'='
+t_TILDE = r'~'
 
 t_SLASH = r'/'
 t_BSLASH = r'\\'

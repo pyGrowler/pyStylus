@@ -60,6 +60,43 @@ def p_selector(p):
     if len(p) == 4:
         p[0] += p[3]
 
+
+def p_decendent_selector(p):
+    '''
+        selector : selector WS selector
+    '''
+    p[0] = p[1] + " " + p[2]
+
+def p_child_selector(p):
+    '''
+        selector : selector    GT    selector
+                 | selector WS GT    selector
+                 | selector WS GT WS selector
+                 | selector    GT WS selector
+    '''
+    p[0] = p[1] + " > " + p[len(p)-1]
+
+
+def p_general_sibling_selector(p):
+    '''
+        selector : selector    TILDE    selector
+                 | selector WS TILDE    selector
+                 | selector WS TILDE WS selector
+                 | selector    TILDE WS selector
+    '''
+    p[0] = p[1] + " ~ " + p[len(p)-1]
+
+
+def p_specific_sibling_selector(p):
+    '''
+        selector : selector    PLUS    selector
+                 | selector WS PLUS    selector
+                 | selector WS PLUS WS selector
+                 | selector    PLUS WS selector
+    '''
+    p[0] = p[1] + " + " + p[len(p)-1]
+
+
 def p_name_list(p):
     '''
         name_list : NAME
