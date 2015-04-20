@@ -18,7 +18,7 @@ REQUIRES = [
 
 setup(
     name='pystylus',
-    packages=['pystylus'],
+    packages=['pystylus', 'pystylus.parsing_rules'],
     scripts=['scripts/pystylus'],
     version=pystylus.__version__,
     author=pystylus.__author__,
