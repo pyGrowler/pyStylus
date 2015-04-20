@@ -17,6 +17,7 @@ def p_node_import_node(p):
     '''
     p[0] = p[1]
 
+
 def p_import_node(p):
     '''
         import_node : IMPORT NAME

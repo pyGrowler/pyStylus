@@ -37,6 +37,7 @@ def p_function_def_with_args_1(p):
     p[0] = {'name': p[1], 'args': p[4]}
     # p[0] = AST.Function(p[1], p[4], [])
 
+
 #
 # argument_list is a comma separated list of names
 #
@@ -85,11 +86,13 @@ def p_math_expression(p):
     '''
     p[0] = p[1]
 
+
 def p_add_expression(p):
     '''
         add_expression : math_expression PLUS math_expression
     '''
     p[0] = p[1] + p[2]
+
 
 def p_subtract_expression(p):
     '''

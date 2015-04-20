@@ -26,6 +26,7 @@ def p_stylus(p):
     '''
     p[0] = p[1]
 
+
 def p_error(p):
     err_str = "Parsing error at %d:%d '%s'" % (
                                 p.lineno,

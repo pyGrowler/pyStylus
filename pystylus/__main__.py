@@ -21,6 +21,7 @@ def parse_args(args):
                         )
     return parser.parse_args(args)
 
+
 def main(args):
     args = parse_args(args)
 
@@ -28,6 +29,7 @@ def main(args):
         print(args.filenames)
     elif args.read_from_stdin:
         print("Reading from stdin...")
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

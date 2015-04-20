@@ -55,11 +55,9 @@ tokens += [
     'INDENT',
     'DEDENT',
 
-    'COLORHEX',
-
-    'BOL', # Beginning of line
-    'EOL', # End of line
-    'STYLUS_END', # End of stylus content (file or string)
+    'BOL',  # Beginning of line
+    'EOL',  # End of line
+    'STYLUS_END',  # End of stylus content (file or string)
 ]
 
 t_LONGARROW = r'-->'
@@ -94,7 +92,6 @@ t_SLASH = r'/'
 t_BSLASH = r'\\'
 t_STRUDEL = r'@'
 
-t_COLORHEX = r'\#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})'
 
 def t_comment(t):
     r"[ ]*//[^\n]*"

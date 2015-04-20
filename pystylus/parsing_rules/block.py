@@ -7,6 +7,7 @@
 # *may* be followed by multiple indent lines.
 #
 
+
 def p_block(p):
     '''
         block : function_block

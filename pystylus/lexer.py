@@ -2,12 +2,12 @@
 # pystylus/lexer.py
 #
 
+from re import UNICODE
 from ply.lex import (lex, LexToken)
 
 from pystylus.errors import StylusLexerError
-from . import tokens
+from pystylus import tokens
 
-from re import UNICODE
 
 class StylusLexer:
     """
