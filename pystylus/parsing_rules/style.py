@@ -109,6 +109,12 @@ def p_universal_selector(p):
     '''
     p[0] = p[1]
 
+def p_reference_selector(p):
+    '''
+        selector : AMPERSAND
+    '''
+    p[0] = p[1]
+
 
 def p_name_list(p):
     '''
