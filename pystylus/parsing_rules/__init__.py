@@ -14,6 +14,7 @@ from pystylus.errors import StylusParserError
 
 from .nodes import *
 from .identifiers import *
+from .logical import *
 from .style import *
 from .function import *
 

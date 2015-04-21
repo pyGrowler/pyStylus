@@ -24,8 +24,37 @@ def p_import_node(p):
     '''
     p[0] = p[1]
 
+
 def p_assignment_node(p):
     '''
         assignment_node : NAME EQUALS name_list
     '''
     p[0] = {"output": p[0], "rhs": p[3]}
+
+
+def p_for_loop_node(p):
+    '''
+        for_loop : FOR conditional EOL INDENT node DEDENT
+    '''
+    p[0] = p[2]
+
+
+def p_if_node(p):
+    '''
+        if_node : IF conditional EOL INDENT node DEDENT
+    '''
+    p[0] = p[2]
+
+
+def p_if_else_node(p):
+    '''
+        if_node : IF conditional EOL INDENT node DEDENT ELSE INDENT node DEDENT
+    '''
+    p[0] = p[2]
+
+
+def p_conditional(p):
+    '''
+        conditional : NAME
+    '''
+    p[0] = p[1]
