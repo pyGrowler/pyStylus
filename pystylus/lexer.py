@@ -2,10 +2,11 @@
 # pystylus/lexer.py
 #
 
+from re import UNICODE
 from ply.lex import (lex, LexToken)
 
 from pystylus.errors import StylusLexerError
-from . import tokens
+from pystylus import tokens
 
 
 class StylusLexer:
@@ -21,7 +22,7 @@ class StylusLexer:
         Constructs the lexer by creating a ply.lex.lex instance with the
         pystylus.tokens as the module parameter.
         """
-        self.lex = lex(module=tokens)
+        self.lex = lex(module=tokens, reflags=UNICODE)
         self.lex.stylus = self
         self.tab_expansion = tab_expansion
 
@@ -77,7 +78,9 @@ class StylusLexer:
         indent_stack = []  # stack of indent lengths
         line_position = 0
         for t in iter(self.lex.token, None):
+            # Special case when looking at the first token of a line
             if line_position is 0:
+                # empty line
                 if t.type == 'EOL':
                     continue
 
@@ -86,49 +89,38 @@ class StylusLexer:
                     # dedent all indents
                     while len(indent_stack) > 0:
                         val = indent_stack.pop()
-                        yield self._gen_token('DEDENT', value=val)
-                    # return empty indent
-                    # yield self._empty_ident()
-                    # yield self._get_token('BOL')
+                        yield self._gen_token('DEDENT', value=' '*val)
 
-                # if nothing on the indent_stack - this must be an indent
+                # if nothing on the indent_stack - this must be an INDENT
                 elif len(indent_stack) is 0:
                     t.type = 'INDENT'
                     indent_stack.append(len(t.value))
 
-                # We have read in whitespace, determine if in- or de- dent
+                # We have read in whitespace - if shorter than previous indent,
+                # this must mean at least one DEDENT token
+                elif len(t.value) < indent_stack[-1]:
+
+                    try:
+                        i = indent_stack.index(len(t.value))+1
+                        deds, indent_stack = indent_stack[i:], indent_stack[:i]
+                    except ValueError:
+                        raise StylusLexerError("Misaligned DEDENT")
+
+                    for d in reversed(deds):
+                        yield self._gen_token('DEDENT', value=' '*d)
+
+                    line_position = len(t.value)
+                    continue
+
+                # A longer indent means we will yield a new INDENT token
+                elif len(t.value) > indent_stack[-1]:
+                    t.type = 'INDENT'
+                    indent_stack.append(len(t.value))
+
+                # Same length: increase line_position and skip this
                 else:
-                    # if shorter than previous indent, this must be a dedent
-                    if len(t.value) < indent_stack[-1]:
-                        # loop through indents, finding one that matches
-                        while len(indent_stack):
-
-                            # if in-between
-                            if len(t.value) == indent_stack[-1]:
-                                t.type = 'DEDENT'
-                                break
-
-                            elif len(t.value) > indent_stack[-1]:
-                                raise StylusLexerError("Misaligned DEDENT")
-
-                            # remove last element
-                            indent_stack.pop()
-
-                        # len(indent_stack)
-                        if len(indent_stack) == 0:
-                            raise StylusLexerError("Misaligned DEDENT")
-
-                    else:
-                        ## CHANGE - Only INDENT on the first indentation!
-                        line_position += len(t.value)
-                        continue
-
-                        # if not shorter, this is an indent
-                        t.type = 'INDENT'
-
-                        # if LONGER, push length to stack
-                        if len(t.value) > indent_stack[-1]:
-                            indent_stack.append(len(t.value))
+                    line_position += len(t.value)
+                    continue
 
             t.line_position = line_position
             line_position = 0 \

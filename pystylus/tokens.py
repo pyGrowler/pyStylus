@@ -4,8 +4,10 @@
 
 keyword_list = [
     'if',
+    'else',
     'for',
     'return',
+    'import',
 ]
 
 RESERVED = dict()
@@ -18,28 +20,27 @@ tokens = [
 
 tokens += [
 
-    'LONGARROW',
-    'LONGWAVYARROW',
-
-    'ARROW',
-    'WAVYARROW',
-    'DOUBLEARROW',
-
     'LT',
     'GT',
+
     'PLUS',
     'MINUS',
     'TIMES',
-    'EQUALS',
     'DIVIDE',
+    'EQUALS',
+    'NEQUALS',
+
     'COMMA',
     'DOT',
+    'ASTERISK',
+    'AMPERSAND',
     'OCTOTHORPE',
     'COLON',
+    'TILDE',
 
     'SLASH',
-    'BSLASH',
     'STRUDEL',
+    'BANG',
 
     'LPAREN',
     'RPAREN',
@@ -49,49 +50,49 @@ tokens += [
     'SUFFIXED_NUMBER',
     'NUMBER',
     'NAME',
+    'ESCAPE',
     'WS',
     'INDENT',
     'DEDENT',
 
-    'COLORHEX',
-
-    'BOL', # Beginning of line
-    'EOL', # End of line
-    'STYLUS_END', # End of stylus content (file or string)
+    'EOL',         # End of line
+    'STYLUS_END',  # End of stylus content (file or string)
 ]
-
-t_LONGARROW = r'-->'
-t_LONGWAVYARROW = r'~~>'
-t_ARROW = r'->'
-t_WAVYARROW = r'~>'
-t_DOUBLEARROW = r'=>'
-
-t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
-t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
 
 t_LT = r'<'
 t_GT = r'>'
 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
+t_TIMES = r'×'
+t_DIVIDE = r'÷'
+
+t_EQUALS = r'='
+t_NEQUALS = r'≠'
 
 t_COMMA = r','
 t_DOT = r'\.'
+t_ASTERISK = r'\*'
+t_AMPERSAND = r'&'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
 t_COLON = r':'
+t_TILDE = r'~'
+t_BANG = r'!'
 
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 
-t_EQUALS = r'='
-
 t_SLASH = r'/'
-t_BSLASH = r'\\'
+# t_BSLASH = r'\\'
 t_STRUDEL = r'@'
 
-t_COLORHEX = r'\#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})'
+
+t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
+t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
+
+t_ESCAPE = r'\\([0-9a-fA-F]{1,6}\w?|[^0-9a-fA-F\n])'
 
 def t_comment(t):
     r"[ ]*//[^\n]*"
@@ -123,7 +124,8 @@ def t_newline(t):
 
 
 def t_NAME(t):
-    r"[a-zA-Z_-][a-zA-Z0-9_-]*"
+    r'(?u)[^\W0-9]\w*'
+    # r"\-?[a-zA-Z_-][a-zA-Z0-9_-]*"
     t.type = RESERVED.get(t.value, "NAME")
     return t
 

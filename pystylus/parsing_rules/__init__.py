@@ -12,11 +12,14 @@ from pystylus.tokens import tokens
 import pystylus.ast as AST
 from pystylus.errors import StylusParserError
 
+from .nodes import *
+from .identifiers import *
+from .logical import *
+from .mathematical import *
 from .style import *
+from .function import *
 
-# from .identifiers import *
 # from .block import *
-# from .function import *
 
 
 def p_stylus(p):
@@ -24,6 +27,7 @@ def p_stylus(p):
         stylus  : node_list STYLUS_END
     '''
     p[0] = p[1]
+
 
 def p_error(p):
     err_str = "Parsing error at %d:%d '%s'" % (

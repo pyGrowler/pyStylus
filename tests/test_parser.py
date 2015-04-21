@@ -12,12 +12,9 @@ def test_constructor():
 
 
 def test_block():
-    s = "body\ndiv"
+    s = "body\ndiv\n color red"
     styl = StylusParser()
     styl.parse(s)
-    print(styl.stack)
-    assert styl.stack[0]['selector'] == 'body'
-    assert styl.stack[1]['selector'] == 'div'
 
 
 def test_funcdef_no_args():
@@ -30,8 +27,8 @@ def test_function_definition():
     styl = StylusParser()
     styl.parse(s)
     func = styl.stack[0]
-    assert type(func) == AST.Function
-    assert func.name == 'A'
+    assert type(func) == AST.FunctionNode
+    assert func.name == 'foo'
     assert func.args == ['a', 'b', 'c']
 
 
