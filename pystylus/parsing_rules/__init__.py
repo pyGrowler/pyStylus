@@ -13,11 +13,11 @@ import pystylus.ast as AST
 from pystylus.errors import StylusParserError
 
 from .nodes import *
+from .identifiers import *
 from .style import *
+from .function import *
 
-# from .identifiers import *
 # from .block import *
-# from .function import *
 
 
 def p_stylus(p):

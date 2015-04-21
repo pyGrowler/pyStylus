@@ -5,9 +5,16 @@
 import pystylus.ast as AST
 
 
-def p_function_block(p):
+def p_node(p):
     '''
-        function_block : function_def EOL INDENT function_contents DEDENT EOL
+        node : function_node
+    '''
+    p[0] = p[1]
+
+
+def p_function_node(p):
+    '''
+        function_node : function_def EOL INDENT function_contents DEDENT
     '''
     p[0] = AST.Function(p[1]['name'], p[1]['args'], p[4])
 
@@ -99,3 +106,10 @@ def p_subtract_expression(p):
         subtract_expression : math_expression MINUS math_expression
     '''
     p[0] = p[1] + p[2]
+
+
+def p_assignment_expression(p):
+    '''
+        assignment_expression : NAME EQUALS math_expression
+    '''
+    p[0] = {"output": p[0], "rhs": p[3]}

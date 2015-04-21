@@ -23,3 +23,9 @@ def p_import_node(p):
         import_node : IMPORT NAME
     '''
     p[0] = p[1]
+
+def p_assignment_node(p):
+    '''
+        assignment_node : NAME EQUALS name_list
+    '''
+    p[0] = {"output": p[0], "rhs": p[3]}
