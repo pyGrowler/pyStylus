@@ -28,6 +28,7 @@ tokens += [
     'TIMES',
     'DIVIDE',
     'EQUALS',
+    'NEQUALS',
 
     'COMMA',
     'DOT',
@@ -39,6 +40,7 @@ tokens += [
 
     'SLASH',
     'STRUDEL',
+    'BANG',
 
     'LPAREN',
     'RPAREN',
@@ -66,6 +68,7 @@ t_TIMES = r'×'
 t_DIVIDE = r'÷'
 
 t_EQUALS = r'='
+t_NEQUALS = r'≠'
 
 t_COMMA = r','
 t_DOT = r'\.'
@@ -74,6 +77,7 @@ t_AMPERSAND = r'&'
 t_OCTOTHORPE = r'\043'  # \043 == '#'
 t_COLON = r':'
 t_TILDE = r'~'
+t_BANG = r'!'
 
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
@@ -83,6 +87,7 @@ t_RBRACE = r'\}'
 t_SLASH = r'/'
 # t_BSLASH = r'\\'
 t_STRUDEL = r'@'
+
 
 t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
 t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'

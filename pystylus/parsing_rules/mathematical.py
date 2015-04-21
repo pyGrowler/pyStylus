@@ -5,8 +5,12 @@
 
 def p_math_expression(p):
     '''
-        math_expression : add_expression
+        math_expression : NUMBER
+                        | NAME
+                        | add_expression
                         | subtract_expression
+                        | mult_expression
+                        | division_expression
     '''
     p[0] = p[1]
 
@@ -25,10 +29,10 @@ def p_subtract_expression(p):
     p[0] = p[1] + p[3]
 
 
-def p_multiplication_expression(p):
+def p_mult_expression(p):
     '''
-        multiplication : math_expression TIMES math_expression
-                       | math_expression ASTERISK math_expression
+        mult_expression : math_expression TIMES math_expression
+                        | math_expression ASTERISK math_expression
     '''
     p[0] = p[1] * p[3]
 

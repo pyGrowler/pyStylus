@@ -5,7 +5,7 @@
 from pystylus.ast import StyleNode
 
 
-def p_node(p):
+def p_node_styles(p):
     '''
         node : style_node
     '''

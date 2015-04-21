@@ -16,7 +16,7 @@ def p_function_node(p):
     '''
         function_node : function_def EOL INDENT function_contents DEDENT
     '''
-    p[0] = AST.Function(p[1]['name'], p[1]['args'], p[4])
+    p[0] = AST.FunctionNode(p[1]['name'], p[1]['args'], p[4])
 
 
 def p_function_def(p):
@@ -80,7 +80,7 @@ def p_function_statement(p):
 
 def p_return_statement(p):
     '''
-        return_statement : RETURN
-                         | RETURN WS NAME
+        return_statement : RETURN EOL
+                         | RETURN WS NAME EOL
     '''
-    p[0] = None if len(p) == 2 else p[3]
+    p[0] = None if len(p) == 3 else p[3]

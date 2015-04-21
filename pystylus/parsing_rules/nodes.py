@@ -11,9 +11,11 @@ def p_node_list(p):
     p[0] = [p[1]] if len(p) == 2 else [p[1]] + p[2]
 
 
-def p_node_import_node(p):
+def p_nodes_node(p):
     '''
         node : import_node
+             | assignment_node
+             | if_node
     '''
     p[0] = p[1]
 
@@ -51,10 +53,3 @@ def p_if_else_node(p):
         if_node : IF conditional EOL INDENT node DEDENT ELSE INDENT node DEDENT
     '''
     p[0] = p[2]
-
-
-def p_conditional(p):
-    '''
-        conditional : NAME
-    '''
-    p[0] = p[1]
