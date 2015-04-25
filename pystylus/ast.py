@@ -40,7 +40,7 @@ class StyleNode:
                          for rule in contents['rules']]
 
     def __str__(self):
-        print('C', self.contents)
+        # print('C', self.contents)
         s = ', '.join(self.selectors)
         s += '{' + ';'.join(self.contents) + '}'
         return s
