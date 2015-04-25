@@ -94,6 +94,7 @@ t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'
 
 t_ESCAPE = r'\\([0-9a-fA-F]{1,6}\w?|[^0-9a-fA-F\n])'
 
+
 def t_comment(t):
     r"[ ]*//[^\n]*"
     pass

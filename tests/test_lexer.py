@@ -111,6 +111,7 @@ def test_single_indent():
     for tok, type in zip(toks, types):
         assert tok.type == type
 
+
 def test_complex_indents():
     s = """a
     b
@@ -122,13 +123,13 @@ def test_complex_indents():
 
 """
     toks = StylusLexer().tokenize(s)
-    types = ['NAME', 'EOL',                     # a
-             'INDENT', 'NAME', 'EOL',           # >b
-             'INDENT', 'NAME', 'EOL',           # >>c
-             'INDENT', 'NAME', 'EOL',           # >>>d
-             'DEDENT', 'NAME', 'EOL',           # >>e
-             'INDENT', 'NAME', 'EOL',           # >>>f
-             'DEDENT','DEDENT', 'NAME', 'EOL',  # > g
+    types = ['NAME', 'EOL',                      # a
+             'INDENT', 'NAME', 'EOL',            # >b
+             'INDENT', 'NAME', 'EOL',            # >>c
+             'INDENT', 'NAME', 'EOL',            # >>>d
+             'DEDENT', 'NAME', 'EOL',            # >>e
+             'INDENT', 'NAME', 'EOL',            # >>>f
+             'DEDENT', 'DEDENT', 'NAME', 'EOL',  # > g
              'DEDENT', 'STYLUS_END']
     for tok, type in zip(toks, types):
-        assert tok.type == type, "Unexpected token with value '%s'"  % tok.value
+        assert tok.type == type, "Unexpected token with value '%s'" % tok.value

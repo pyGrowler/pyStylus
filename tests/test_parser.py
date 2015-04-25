@@ -9,6 +9,7 @@ import pytest
 
 def test_constructor():
     styl = StylusParser()
+    assert isinstance(styl, StylusParser)
 
 
 def test_block():
