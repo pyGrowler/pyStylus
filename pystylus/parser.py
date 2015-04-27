@@ -5,10 +5,7 @@
 from ply.yacc import (yacc)
 
 import pystylus.lexer
-import pystylus.ast as AST
 import pystylus.parsing_rules
-
-from pystylus.errors import StylusParserError
 
 
 class StylusParser():
