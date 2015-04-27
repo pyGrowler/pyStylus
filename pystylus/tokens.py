@@ -5,6 +5,7 @@
 keyword_list = [
     'if',
     'else',
+    'elif',
     'for',
     'return',
     'import',
