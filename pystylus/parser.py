@@ -7,6 +7,8 @@ from ply.yacc import (yacc)
 import pystylus.lexer
 import pystylus.parsing_rules
 
+from pystylus.errors import StylusParserError                            # noqa
+
 
 class StylusParser():
     """
