@@ -45,7 +45,7 @@ def p_for_loop_node(p):
 
 def p_if_node(p):
     '''
-        if_node : IF conditional EOL INDENT node DEDENT
+        if_node : IF WS conditional EOL INDENT node DEDENT
     '''
     p[0] = AST.ConditionalNode(p[2], p[5])
 

@@ -5,7 +5,6 @@
 from pystylus.lexer import (StylusLexer, StylusLexerError)
 import pytest
 
-
 def test_construction():
     lexer = StylusLexer()
     assert lexer
@@ -133,3 +132,9 @@ def test_complex_indents():
              'DEDENT', 'STYLUS_END']
     for tok, type in zip(toks, types):
         assert tok.type == type, "Unexpected token with value '%s'" % tok.value
+
+
+def test_if_elif():
+    s = "elif"
+    toks = StylusLexer().tokenize(s)
+    assert toks[0].type == 'ELIF'

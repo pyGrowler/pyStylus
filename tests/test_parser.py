@@ -51,5 +51,14 @@ def xtest_function_block():
     styl.parse(s)
 
 
+def test_if_node():
+    s = "if x\n Do\n  Not Fail"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+    s = "if (x)\n Do\n  Not Fail"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
 if __name__ == '__main__':
     test_block()
