@@ -71,5 +71,25 @@ def test_if_else_node():
     assert isinstance(toks[0], AST.ConditionalNode)
 
 
+def test_if_elif_node():
+    s = "if x\n Do\n  Not Fail\nelif y\n A\n  B C"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+    s = "if x\n Do\n  Not Fail\n\nelif (y)\n   A\n    B C"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+    s = "if x\n Do\n  Not Fail\n\nelif (y)\n   A\n    B C\nelif a\n A\n  B C"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+
+def test_if_elif_else_node():
+    s = "if x\n Do\n  Not Fail\nelif y\n A\n  B C\nelse\n q\n  q q"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+
 if __name__ == '__main__':
     test_block()
