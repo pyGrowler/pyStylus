@@ -55,7 +55,7 @@ def p_if_else_node(p):
         if_node : if_statement else_statement
     '''
     condition, node = p[1].values()
-    p[0] = AST.ConditionalNode(condition, node, p[3])
+    p[0] = AST.ConditionalNode(condition, node, p[2])
 
 
 def p_if_elif_nodes(p):

@@ -60,5 +60,16 @@ def test_if_node():
     toks = StylusParser().parse(s)
     assert isinstance(toks[0], AST.ConditionalNode)
 
+
+def test_if_else_node():
+    s = "if x\n Do\n  Not Fail\nelse\n A\n  B C"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+    s = "if x\n Do\n  Not Fail\n\nelse\n   A\n    B C"
+    toks = StylusParser().parse(s)
+    assert isinstance(toks[0], AST.ConditionalNode)
+
+
 if __name__ == '__main__':
     test_block()
