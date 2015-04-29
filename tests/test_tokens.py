@@ -8,6 +8,7 @@ from pystylus import tokens as TOKENS
 
 from re import UNICODE
 
+
 class mock_stylus():
     def _normalize_whitespace(self, t):
         pass
@@ -128,6 +129,7 @@ def test_multiline_comment():
     with pytest.raises(Exception):
         tok = lexer.token()
 
+
 def test_function_tokens():
     s = "foo()"
     lexer = lex.lex(module=TOKENS)
@@ -138,6 +140,7 @@ def test_function_tokens():
     assert tok.type == "LPAREN"
     tok = lexer.token()
     assert tok.type == "RPAREN"
+
 
 def test_unicode_token():
     s = "πpy"

@@ -45,61 +45,80 @@ def p_for_loop_node(p):
 
 def p_if_node(p):
     '''
-        if_node : IF WS conditional EOL INDENT node DEDENT
+        if_node : if_statement
     '''
-    p[0] = AST.ConditionalNode(p[2], p[5])
+    p[0] = AST.ConditionalNode(p[1]['condition'], p[1]['node'])
 
 
 def p_if_else_node(p):
     '''
-        if_node : IF conditional EOL INDENT node DEDENT else_node
+        if_node : if_statement else_statement
     '''
-    p[0] = AST.ConditionalNode(p[2], p[5], p[7])
+    condition, node = p[1].values()
+    p[0] = AST.ConditionalNode(condition, node, p[3])
 
 
 def p_if_elif_nodes(p):
     '''
-        if_node : IF conditional EOL INDENT node DEDENT else_if_list
+        if_node : if_statement elif_list
     '''
-    p[0] = AST.ConditionalNode(p[2], p[5])
+    p[0] = AST.ConditionalNode(p[1]['condition'], p[1]['node'])
 
-    for condition, node in p[7]:
+    for elif_statement in p[2]:
+        condition, node = elif_statement.values()
         p[0].add_elif(condition, node)
 
 
 def p_if_elif_else_nodes(p):
     '''
-        if_node : IF conditional EOL INDENT node DEDENT else_if_list else_node
+        if_node : if_statement elif_list else_statement
     '''
-    p[0] = AST.ConditionalNode(p[2], p[5], p[7])
-    for condition, node in p[7]:
+    condition, node = p[1].values()
+    p[0] = AST.ConditionalNode(condition, node, p[3])
+    for elif_statement in p[2]:
+        condition, node = elif_statement.values()
         p[0].add_elif(condition, node)
 
 
-def p_else_if_list(p):
+def p_if_statement(p):
     '''
-        else_if_list : ELIF conditional INDENT node DEDENT
-                     | else_if_list ELIF conditional INDENT node DEDENT
+        if_statement : IF conditional EOL INDENT node DEDENT
+                     | IF WS conditional EOL INDENT node DEDENT
     '''
-    if len(p) == 6:
-        p[0] = [(p[2], p[4])]
-    else:
-        p[0] = p[1] + [(p[3], p[5])]
+    l = len(p)
+    p[0] = {
+        "condition": p[l-5],
+        "node": p[l-2]
+    }
 
 
-def p_long_else_if_list(p):
+def p_elif_statement(p):
     '''
-        else_if_list : ELSE IF conditional INDENT node DEDENT
-                     | else_if_list ELSE IF conditional INDENT node DEDENT
+        elif_statement : ELIF conditional EOL INDENT node DEDENT
+                       | ELIF WS conditional EOL INDENT node DEDENT
+                       | ELSE IF conditional EOL INDENT node DEDENT
+                       | ELSE IF WS conditional EOL INDENT node DEDENT
     '''
-    if len(p) == 7:
-        p[0] = [(p[3], p[5])]
-    else:
-        p[0] = p[1] + [(p[4], p[6])]
+    l = len(p)
+    p[0] = {
+        "condition": p[l-5],
+        "node": p[l-2]
+    }
 
 
-def p_else_node(p):
+def p_else_statement(p):
     '''
-        else_node : ELSE EOL INDENT node DEDENT
+        else_statement : ELSE EOL INDENT node DEDENT
     '''
     p[0] = p[4]
+
+
+def p_elif_list(p):
+    '''
+        elif_list : elif_statement
+                  | elif_list elif_statement
+    '''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
