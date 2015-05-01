@@ -9,8 +9,8 @@ parser.
 """
 
 
-__version__ = '0.1.5'
-__date__ = 'Apr 21, 2015'
+__version__ = '0.1.6'
+__date__ = 'Apr 30, 2015'
 __author__ = 'Andrew Kubera'
 __contact__ = 'Andrew.Kubera@gmail.com'
 __license__ = 'MIT'
