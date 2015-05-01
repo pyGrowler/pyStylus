@@ -60,16 +60,6 @@ class StylusLexer:
     def _empty_ident(self):
         return self._gen_token('INDENT')
 
-    @classmethod
-    def _determine_indents(cls, token_iter):
-        """
-        Method called upon tokenizing a string. This loops through and changes
-        any whitespace tokens that follow a newline into an INDENT or DEDENT
-        token.
-        This modifies the tokens in-place.
-        """
-        pass
-
     def yield_tokens(self, string):
         """
         A generator which tokenizes a string into a series of pystylus tokens.
@@ -126,7 +116,6 @@ class StylusLexer:
             line_position = 0 \
                 if t.type is 'EOL' \
                 else line_position + len(t.value)
-            prev_type = t.type
             yield t
 
         # Always finish the file with a newline, even if not there...
@@ -149,9 +138,15 @@ class StylusLexer:
         return [t for t in self.yield_tokens(string)]
 
     def input(self, string):
+        """
+        Token function which imitates the underlying PLY lex.input method.
+        """
         self.token_iterator = self.yield_tokens(string)
 
     def token(self):
+        """
+        Token function which imitates the underlying PLY lex.token method.
+        """
         try:
             return next(self.token_iterator)
         except StopIteration:

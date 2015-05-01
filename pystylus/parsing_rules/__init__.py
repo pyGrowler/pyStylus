@@ -1,6 +1,8 @@
 #
 # pystylus/parsing_rules/__init__.py
 #
+# flake8: noqa
+#
 """
 Sub-module to keep parsing rules organized.
 

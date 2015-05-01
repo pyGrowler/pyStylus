@@ -5,10 +5,9 @@
 from ply.yacc import (yacc)
 
 import pystylus.lexer
-import pystylus.ast as AST
 import pystylus.parsing_rules
 
-from pystylus.errors import StylusParserError
+from pystylus.errors import StylusParserError                            # noqa
 
 
 class StylusParser():
@@ -26,12 +25,6 @@ class StylusParser():
         self.lexer = pystylus.lexer.StylusLexer()
         self.stack = []
         self.parser = yacc(module=pystylus.parsing_rules, start="stylus")
-
-    def _push_scope(self):
-        self._scope_stack.append(dict())
-
-    def _pop_scope(self):
-        self._scope_stack.pop()
 
     def parse(self, src, filename='', debuglevel=0):
         if not src:

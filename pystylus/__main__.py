@@ -14,10 +14,9 @@ def parse_args(args):
                         type=str,
                         help="Filename(s) which to convert to css"
                         )
-    parser.add_argument("--",
-                        dest='read_from_stdin',
+    parser.add_argument("-P", "--pretty",
                         action='store_true',
-                        help="Read from STDIN instead of file."
+                        help="Print the output css in a pretty way."
                         )
     return parser.parse_args(args)
 
@@ -26,10 +25,13 @@ def main(args):
     args = parse_args(args)
 
     if args.filenames:
-        print(args.filenames)
-    elif args.read_from_stdin:
-        print("Reading from stdin...")
+        with open(args.filenames) as file:
+            input = file.read()
+    else:
+        input = sys.stdin.read()
 
+    node = pystylus.StylusParser().parse(input)[0]
+    print(node)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

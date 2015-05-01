@@ -79,13 +79,7 @@ def p_style_statement(p):
 def p_simple_style_statement(p):
     '''
         simple_statement : NAME WS name_list
-    '''
-    p[0] = [p[1], p[3]]
-
-
-def p_simple_style_statement(p):
-    '''
-        simple_statement : NAME COLON WS name_list
+                         | NAME COLON WS name_list
                          | NAME WS COLON WS name_list
     '''
     p[0] = [p[1], p[len(p)-1]]
