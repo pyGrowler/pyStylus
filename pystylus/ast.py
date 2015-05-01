@@ -65,6 +65,7 @@ class ConditionalNode:
         """
         self.condition = condition
         self.node = node
+        self.else_ifs = []
         if else_node is not None:
             self.set_else(else_node)
 
@@ -73,7 +74,7 @@ class ConditionalNode:
         Add an 'else if' condition to be checked in the event the 'if' returned
         False. These will be checked in the order supplied.
         """
-        pass
+        self.else_ifs.append((condition, node))
 
     def set_else(self, node):
         """
