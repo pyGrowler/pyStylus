@@ -51,39 +51,34 @@ def xtest_function_block():
     styl.parse(s)
 
 
-def test_if_node():
-    s = "if x\n Do\n  Not Fail"
-    toks = StylusParser().parse(s)
-    assert isinstance(toks[0], AST.ConditionalNode)
-
-    s = "if (x)\n Do\n  Not Fail"
-    toks = StylusParser().parse(s)
-    assert isinstance(toks[0], AST.ConditionalNode)
-
-
-def test_if_else_node():
-    s = "if x\n Do\n  Not Fail\nelse\n A\n  B C"
-    toks = StylusParser().parse(s)
-    assert isinstance(toks[0], AST.ConditionalNode)
-
-    s = "if x\n Do\n  Not Fail\n\nelse\n   A\n    B C"
-    toks = StylusParser().parse(s)
+@pytest.mark.parametrize("styl", [
+    "if x\n Do\n  Not Fail",
+    "if (x)\n Do\n  Not Fail"
+])
+def test_if_node(styl):
+    toks = StylusParser().parse(styl)
+    assert len(toks) == 1
     assert isinstance(toks[0], AST.ConditionalNode)
 
 
-def test_if_elif_node():
-    s = "if x\n Do\n  Not Fail\nelif y\n A\n  B C"
-    toks = StylusParser().parse(s)
+@pytest.mark.parametrize("styl", [
+    "if x\n Do\n  Not Fail\nelse\n A\n  B C",
+    "if x\n Do\n  Not Fail\n\nelse\n   A\n    B C"
+])
+def test_if_else_node(styl):
+    toks = StylusParser().parse(styl)
     assert isinstance(toks[0], AST.ConditionalNode)
 
-    s = "if x\n Do\n  Not Fail\n\nelif (y)\n   A\n    B C"
-    toks = StylusParser().parse(s)
-    assert isinstance(toks[0], AST.ConditionalNode)
 
-    s = "if x\n Do\n  Not Fail\n\nelif (y)\n   A\n    B C\nelif a\n A\n  B C"
-    toks = StylusParser().parse(s)
+@pytest.mark.parametrize("styl, elif_count", [
+    ("if x\n Do\n  Not Fail\nelif y\n A\n  B C", 1),
+    ("if x\n Do\n  Not Fail\n\nelif (y)\n   A\n    B C", 1),
+    ("if x\n Do\n  Not Fail\n\nelif (y)\n   A\n    B C\nelif a\n A\n  B C", 2),
+])
+def test_if_elif_node(styl, elif_count):
+    toks = StylusParser().parse(styl)
     assert isinstance(toks[0], AST.ConditionalNode)
-    assert len(toks[0].else_ifs) == 2
+    assert len(toks[0].else_ifs) == elif_count
 
 
 def test_if_elif_else_node():
