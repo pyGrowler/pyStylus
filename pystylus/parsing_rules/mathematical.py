@@ -26,7 +26,7 @@ def p_subtract_expression(p):
     '''
         subtract_expression : math_expression MINUS math_expression
     '''
-    p[0] = p[1] + p[3]
+    p[0] = p[1] - p[3]
 
 
 def p_mult_expression(p):

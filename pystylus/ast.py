@@ -25,7 +25,9 @@ class Block:
 
 
 class FunctionNode:
-
+    """
+    A callable function
+    """
     def __init__(self, function_name, argument_list, content):
         self.name = function_name
         self.args = argument_list
@@ -33,13 +35,26 @@ class FunctionNode:
 
 
 class StyleNode:
+    """
+    The core of the stylus language. A StyleNode contains the css selectors and
+    the style rules pertaining to those selectors. It also has a list of nested
+    StyleNodes. When rendered to string, objects output the CSS representation
+    of the styles.
+    """
 
     def __init__(self, selectors, contents):
+        """
+        Construct a StyleNode with a list of selectors and the contents of the
+        style block.
+        """
         self.selectors = selectors
         self.contents = [rule[0] + ':' + ' '.join(rule[1])
                          for rule in contents['rules']]
 
     def __str__(self):
+        """
+        Convert the StyleNode to a string by printing CSS.
+        """
         # print('C', self.contents)
         s = ', '.join(self.selectors)
         s += '{' + ';'.join(self.contents) + '}'

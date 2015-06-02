@@ -8,12 +8,21 @@ A pure-python stylus to CSS converter
 from setuptools import setup
 
 import pystylus
-from pystylus import tokens
 
 PLATFORMS = 'all'
 
 REQUIRES = [
     'ply',
+]
+
+CLASSIFIERS = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 3",
 ]
 
 setup(
@@ -27,4 +36,5 @@ setup(
     url=pystylus.__url__,
     platforms=PLATFORMS,
     install_requires=REQUIRES,
+    classifiers=CLASSIFIERS,
 )
