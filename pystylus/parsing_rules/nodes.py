@@ -26,7 +26,11 @@ def p_import_node(p):
     '''
         import_node : IMPORT NAME
     '''
-    p[0] = p[1]
+    name = p[2]
+    if name.endswith(".css"):
+        p[0] = AST.LiteralImportNode(name)
+    else:
+        p[0] = AST.ImportNode(name)
 
 
 def p_assignment_node(p):

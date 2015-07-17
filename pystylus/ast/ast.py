@@ -47,6 +47,8 @@ class StyleNode:
         Construct a StyleNode with a list of selectors and the contents of the
         style block.
         """
+        if any([selector.startswith('-') for selector in selectors]):
+            raise Exception("DashedSelector")
         self.selectors = selectors
         self.contents = [rule[0] + ':' + ' '.join(rule[1])
                          for rule in contents['rules']]
