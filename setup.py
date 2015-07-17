@@ -12,7 +12,7 @@ import pystylus
 PLATFORMS = 'all'
 
 REQUIRES = [
-    'ply',
+    'ply==3.4',
 ]
 
 CLASSIFIERS = [
