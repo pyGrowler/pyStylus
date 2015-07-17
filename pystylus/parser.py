@@ -10,7 +10,7 @@ import pystylus.parsing_rules
 from pystylus.errors import StylusParserError                            # noqa
 
 
-class StylusParser():
+class StylusParser:
     """
     The stylus parser interprets a list of LexTokens as a complete stylus
     template. This generates an abstract syntax tree out of components defined
@@ -22,11 +22,17 @@ class StylusParser():
     """
 
     def __init__(self):
+        """
+        Construct the parser. This sets up the initial lexer and parser
+        objects.
+        """
         self.lexer = pystylus.lexer.StylusLexer()
         self.stack = []
         self.parser = yacc(module=pystylus.parsing_rules, start="stylus")
 
     def parse(self, src, filename='', debuglevel=0):
+        if not isinstance(src, str):
+            raise TypeError
         if not src:
             src = "\n"
         try:
