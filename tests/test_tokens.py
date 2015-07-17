@@ -55,6 +55,7 @@ def test_token_0(lexer):
     ("@", "STRUDEL"),
     ("(", "LPAREN"),
     (")", "RPAREN"),
+    ("=", "EQUALS"),
     ("7", "NUMBER"),
     ("9.123", "NUMBER"),
     ("9.123E-4", "SUFFIXED_NUMBER"),
@@ -86,6 +87,20 @@ def test_token_types(lexer, string, token_types):
     lexer.input(string)
     for token, token_type in zip(iter_lexer(lexer), token_types):
         assert token.type == token_type
+
+
+
+@pytest.mark.parametrize("string", [
+    ' ',
+    '  ',
+    '    ',
+])
+def test_whitespace_values(lexer, string):
+    lexer.input(string)
+    token = lexer.token()
+    assert token.type == 'WS'
+    assert token.value == string
+
 
 def test_indent_token():
 

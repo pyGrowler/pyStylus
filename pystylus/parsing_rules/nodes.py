@@ -35,9 +35,9 @@ def p_import_node(p):
 
 def p_assignment_node(p):
     '''
-        assignment_node : NAME EQUALS name_list
+        assignment_node : NAME EQUALS NAME
     '''
-    p[0] = {"output": p[0], "rhs": p[3]}
+    p[0] = AST.AssignmentNode([p[1]], rhs=p[3])
 
 
 def p_for_loop_node(p):

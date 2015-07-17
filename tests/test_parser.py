@@ -102,5 +102,14 @@ def test_for_parsing_type_assertion(parser):
     with pytest.raises(TypeError):
         parser.parse(['a', 'b'])
 
+
+@pytest.mark.parametrize("string, nodetype", [
+    ("x = y", AST.AssignmentNode)
+])
+def xtest_assignment_node(parser, string, nodetype):
+    result = parser.parse(string)
+    assert isinstance(result[0], nodetype)
+
+
 if __name__ == '__main__':
     test_block()
