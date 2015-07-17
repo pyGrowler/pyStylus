@@ -8,7 +8,6 @@ keyword_list = [
     'elif',
     'for',
     'return',
-    'import',
 ]
 
 RESERVED = dict()
@@ -56,6 +55,8 @@ tokens += [
     'INDENT',
     'DEDENT',
 
+    'IMPORT',
+
     'EOL',         # End of line
     'STYLUS_END',  # End of stylus content (file or string)
 ]
@@ -89,6 +90,7 @@ t_SLASH = r'/'
 # t_BSLASH = r'\\'
 t_STRUDEL = r'@'
 
+t_IMPORT = r'@import'
 
 t_SUFFIXED_NUMBER = r'(\d+(\.\d*)?|\.\d+)([a-zA-Z]+|%)'
 t_NUMBER = r'(\d+(\.\d*)?|\.\d+)'

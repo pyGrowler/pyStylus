@@ -8,49 +8,26 @@ from pystylus import tokens as TOKENS
 
 from re import UNICODE
 
+@pytest.fixture
+def lexer():
+    lexer = lex.lex(module=TOKENS)
+    lexer.stylus = mock_stylus()
+    return lexer
 
 class mock_stylus():
     def _normalize_whitespace(self, t):
         pass
 
 
-def test_iter():
-    l = [1, 2, 3, 4]
-    # i = iter(l.next, None)
-    # for x in i:
-    #     x += 1
-    # raise Exception(l)
+def iter_lexer(lex):
+    next_token = lex.token()
+    while next_token is not None:
+        yield next_token
+        next_token = lex.token()
+    raise StopIteration
 
 
-def test_zero():
-
-    tokens = (
-        'ZERO',
-        'ONE',
-        'TWO',
-        'OTHER'
-    )
-
-    t_ZERO = r'0'
-    t_ONE = r'1'
-
-    def t_TWO(t):
-        r'2'
-        return t
-        raise Exception(t.lexpos)
-
-    s = "011002"
-    lexer = lex.lex()
-    lexer.input(s)
-    count = 0
-    for x in iter(lexer.token, None):
-        count += 1
-    assert len(s) == count
-
-
-def test_token_0():
-
-    lexer = lex.lex(module=TOKENS)
+def test_token_0(lexer):
     lexer.input("9")
     tok = lexer.token()
     assert tok.type == 'NUMBER'
@@ -70,6 +47,46 @@ def test_token_0():
         # raise Exception(tok)
 
 
+@pytest.mark.parametrize("string, token_type", [
+    ("Andrew", "NAME"),
+    ("@import", "IMPORT"),
+    ("import", "NAME"),
+    ("if", "IF"),
+    ("@", "STRUDEL"),
+    ("(", "LPAREN"),
+    (")", "RPAREN"),
+    ("7", "NUMBER"),
+    ("9.123", "NUMBER"),
+    ("9.123E-4", "SUFFIXED_NUMBER"),
+])
+def test_token_type(lexer, string, token_type):
+    lexer.input(string)
+    token = lexer.token()
+    assert token.type == token_type
+
+
+@pytest.mark.parametrize("string", [
+    "Andrew",
+    'lowercase',
+    'UPPERCASE',
+])
+def test_token_values(lexer, string):
+    lexer.input(string)
+    token = lexer.token()
+    assert token.type == 'NAME'
+    assert token.value == string
+
+
+@pytest.mark.parametrize("string, token_types", [
+    ("python is cool", ["NAME", "WS"] * 3),
+    ("if something @import", ["IF", "WS", "NAME", "WS", "IMPORT"]),
+    ("if elif else", "IF WS ELIF WS ELSE".split())
+])
+def test_token_types(lexer, string, token_types):
+    lexer.input(string)
+    for token, token_type in zip(iter_lexer(lexer), token_types):
+        assert token.type == token_type
+
 def test_indent_token():
 
     t_NUMBER = r'[0-9]+(:?\.[0-9]*)'
@@ -86,14 +103,6 @@ def test_indent_token():
     assert tok.type == "WS"
 
 
-def test_reserved():
-    s = "if one"
-    lexer = lex.lex(module=TOKENS)
-    lexer.input(s)
-    tok = lexer.token()
-    assert tok.type == "IF"
-
-
 def test_comment():
     s = "A// B C D\nE"
     lexer = lex.lex(module=TOKENS)
@@ -106,9 +115,8 @@ def test_comment():
     assert tok.type == "NAME" and tok.value == "E" and tok.lineno == 2
 
 
-def test_multiline_comment():
+def test_multiline_comment(lexer):
     s = "X/**/"
-    lexer = lex.lex(module=TOKENS)
     lexer.input(s)
     tok = lexer.token()
     assert tok.type == "NAME" and tok.value == "X"
