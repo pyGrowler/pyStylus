@@ -10,5 +10,6 @@ Module loader for the pystylus Abstract Syntax Tree
 from .importnode import (ImportNode, LiteralImportNode)
 from .selectorlist import SelectorList
 from .assignment import AssignmentNode
+from .conditional import ConditionalNode
 
 from .ast import *
