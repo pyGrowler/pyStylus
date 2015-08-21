@@ -11,5 +11,6 @@ from .importnode import (ImportNode, LiteralImportNode)
 from .selectorlist import SelectorList
 from .assignment import AssignmentNode
 from .conditional import ConditionalNode
+from .comparison import EqualityOp
 
 from .ast import *

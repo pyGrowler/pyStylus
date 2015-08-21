@@ -26,7 +26,10 @@ class EqualityOp:
     """
     Operator representing equality (==)
     """
-    pass
+
+    def __init__(self, left_expr, right_expr):
+        self.left_side = left_expr
+        self.right_side = right_expr
 
 
 class LessThanOp:
